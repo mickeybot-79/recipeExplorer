@@ -220,7 +220,7 @@ const PageHeader = () => {
         )
 
         let lngChoice = (
-            <div id='flag-choice' style={{display: displayLngChoice}} onMouseLeave={() => setDisplayLngChoice('none')}>
+            <div id='flag-choice' style={{display: displayLngChoice}} onMouseOver={() => setDisplayLngChoice('block')} onMouseLeave={() => setDisplayLngChoice('none')}>
                 <div id='EN-option' onClick={() => {
                     window.localStorage.setItem('usrlng', 'en')
                     if (currentLocation.pathname.includes('/es')) navigate(`/${currentLocation.pathname}`)

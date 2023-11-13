@@ -365,7 +365,7 @@ const Recipe = ({ currentUser }) => {
         )
 
     } catch (err) {
-        console.log(err)
+        //console.log(err)
         return (
             <div style={{
                 width: '100%',

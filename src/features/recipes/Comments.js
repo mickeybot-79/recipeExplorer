@@ -131,18 +131,33 @@ const Comments = ({ userID, userName, id, goComment, setGoComment, isTemp }) => 
                     comments: [...response.data.recipe.comments]
                 }
             })
+            setTrueSuccess(true)
             if (commentsSlice > 10) {
                 window.scrollTo(0, replyRef.current.offsetTop - 2250)
             }
-            setTrueSuccess(true)
         }
         fetchStats()
         // eslint-disable-next-line
     }, [getRecipe, id, commentsSlice, userID, getCommentedBy])
 
-    if (isLoading) return (
-        <></>
-    )
+    // if (isLoading) return (
+    //     <div style={{
+    //         width: '100%',
+    //         height: '1000px',
+    //         display: 'grid',
+    //         placeContent: 'center'
+    //     }}>
+    //         <img
+    //             src='../Images/favicon-gif.gif'
+    //             alt='icon'
+    //             style={{
+    //                 marginTop: '-500px',
+    //                 width: '200px',
+    //                 filter: 'sepia(40%)'
+    //             }}
+    //         />
+    //     </div>
+    // )
 
     const handleLikeComment = async (e, commentID) => {
         if (goComment) {

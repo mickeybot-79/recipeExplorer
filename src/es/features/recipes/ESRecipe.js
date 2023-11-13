@@ -32,7 +32,8 @@ const Recipe = ({ currentUser }) => {
     useEffect(() => {
         const fetchData = async () => {
             const response = await getRecipe({ id: id, commentsSlice: 0 })
-            if (response?.error?.originalStatus === 400 || response?.data === null || usrlng !== response?.data?.recipe?.language) navigate('/es/recipe/404')
+            if (response?.error?.originalStatus === 400 || response?.data === null) navigate('/es/recipe/404')
+            window.localStorage.setItem('usrlng', 'es')
             const authorUser = await getUserWhoPosted({ userID: response?.data?.recipe?.createdBy })
             setCurrentRecipe(() => {
                 return response.data.recipe

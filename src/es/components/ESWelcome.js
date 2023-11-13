@@ -86,7 +86,7 @@ const Welcome = () => {
                                 <img src="../../Images/Recipes/chaja.jpg" alt="" />
                                 <p className="option-label">Chajá Uruguayo</p>
                             </div>
-                            <div className="welcome-option" style={{transform: `translateX(-${(currentLeftScroll * 300)}px)`, transition: '0.2s', left: '630px'}} onClick={() => navigate('/es/recipes/empanadas-de%20pollo%20con%20salsa%20teriyaki')}>
+                            <div className="welcome-option" style={{transform: `translateX(-${(currentLeftScroll * 300)}px)`, transition: '0.2s', left: '630px'}} onClick={() => navigate('/es/recipes/empanadas-de-pollo-con-salsa-teriyaki')}>
                                 <img src="../../Images/Recipes/empanadas.webp" alt="" />
                                 <p className="option-label">Empanadas de pollo con salsa teriyaki</p>
                             </div>
