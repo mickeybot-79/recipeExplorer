@@ -3,8 +3,7 @@ import { useGetCollectionsMutation } from '../users/usersApiSlice'
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from "../auth/authSlice"
 import jwtDecode from 'jwt-decode'
-//import Collection from './Collection'
-import Test from './Test'
+import Collection from './Collection'
 import NewCollection from './NewCollection'
 import { useNavigate, useLocation } from "react-router-dom"
 import LoadingIcon from "../../components/LoadingIcon"
@@ -123,13 +122,7 @@ const MyCollections = () => {
                         })
                     }}
                     >Create a new collection</button>
-                    {/* <Collection
-                        selectedCollection={selectedCollection}
-                        shrinkAnimation={shrinkAnimation}
-                        closeCollection={closeCollection}
-                        userID={userID}
-                    /> */}
-                    <Test
+                    <Collection
                         selectedCollection={selectedCollection}
                         setSelectedCollection={setSelectedCollection}
                         shrinkAnimation={shrinkAnimation}
