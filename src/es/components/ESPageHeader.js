@@ -14,7 +14,6 @@ const ESPageHeader = () => {
     var logged = isTemp === 'n' ? true : false
     var userName = token ? jwtDecode(token).UserInfo.username : ''
     var userID = token ? jwtDecode(token).UserInfo._id : window.localStorage.getItem('temp-id')
-    //const userImage = window.localStorage.getItem('image')
 
     const [tempLogin] = useTempLoginMutation()
 
@@ -49,12 +48,9 @@ const ESPageHeader = () => {
 
     useEffect(() => {
         const userLng = window.localStorage.getItem('usrlng')
-        if (!userLng) {
-            var usrlang = navigator.language || navigator.userLanguage
-            window.localStorage.setItem('usrlng', usrlang)
-            if (usrlang === 'en') navigate('/')
-        }
-    }, [navigate])
+        if (currentLocation.pathname === '/es/' && userLng === 'en') navigate('/')
+        // eslint-disable-next-line
+    }, [])
 
     useEffect(() => {
         if (isSuccess) navigate('/es')

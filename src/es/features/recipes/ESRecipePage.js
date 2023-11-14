@@ -25,7 +25,7 @@ const RecipePage = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    const usrlng = window.localStorage.getItem('usrlng') || ''
+    const usrlng = window.localStorage.getItem('usrlng')
 
     const navigate = useNavigate()
 

@@ -50,12 +50,9 @@ const PageHeader = () => {
 
     useEffect(() => {
         const userLng = window.localStorage.getItem('usrlng')
-        if (!userLng) {
-            var usrlang = navigator.language || navigator.userLanguage
-            window.localStorage.setItem('usrlng', usrlang)
-            if (usrlang === 'es') navigate('/es')
-        }
-    }, [navigate])
+        if (!currentLocation.pathname && userLng === 'es') navigate('/es/')
+        // eslint-disable-next-line
+    }, [])
 
     useEffect(() => {
         if (isSuccess ) navigate('/')

@@ -15,6 +15,7 @@ const PersistLogin = () => {
     const session = window.sessionStorage.getItem('session')
     const isTemp = window.sessionStorage.getItem('isTemp')
     const token = useSelector(selectCurrentToken)
+    const userLng = window.localStorage.getItem('usrlng')
     const effectRan = useRef(false)
 
     const [trueSuccess, setTrueSuccess] = useState(false)
@@ -100,6 +101,11 @@ const PersistLogin = () => {
             }
         }
 
+        if (!userLng) {
+            var usrlang = navigator.language || navigator.userLanguage
+            window.localStorage.setItem('usrlng', usrlang)
+        }
+
         if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
 
             const verifyRefreshToken = async () => {
@@ -144,7 +150,7 @@ const PersistLogin = () => {
 
         return () => effectRan.current = true
 
-    }, [persist, tempLogin, dispatch, addNewUser, tempUserId, session, refresh, isTemp, getUserData, token])
+    }, [persist, tempLogin, dispatch, addNewUser, tempUserId, session, refresh, isTemp, getUserData, token, userLng])
 
     let content
 
