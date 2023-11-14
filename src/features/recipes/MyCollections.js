@@ -44,7 +44,7 @@ const MyCollections = () => {
         const fetchCollections = async () => {
             const userCollections = await getCollections({ userID: userID})
             setCollections(() => {
-                return userCollections.data.userCollections
+                return userCollections?.data?.userCollections
             })
         }
         fetchCollections()
