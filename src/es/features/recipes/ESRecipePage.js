@@ -1,9 +1,8 @@
-// add "report" option
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from "../../../features/auth/authSlice"
 import jwtDecode from 'jwt-decode'
-import { useNavigate, useParams, useLocation } from 'react-router-dom'
+import { useNavigate, useParams, /*useLocation*/ } from 'react-router-dom'
 import {
     useGetRecipeMutation,
     useUpdateRecipeMutation
@@ -25,15 +24,15 @@ const RecipePage = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    const usrlng = window.localStorage.getItem('usrlng')
+    // const usrlng = window.localStorage.getItem('usrlng')
 
     const navigate = useNavigate()
 
-    const currentLocation = useLocation()
+    // const currentLocation = useLocation()
 
-    useEffect(() => {
-        if (usrlng === 'en')  navigate(`/${currentLocation.pathname}`)
-    }, [usrlng, navigate, currentLocation])
+    // useEffect(() => {
+    //     if (usrlng === 'en')  navigate(`/${currentLocation.pathname}`)
+    // }, [usrlng, navigate, currentLocation])
 
     const lgoff = window.localStorage.getItem('lgoff')
 
@@ -101,6 +100,7 @@ const RecipePage = () => {
         const fetchData = async () => {
             const response = await getRecipe({ id: id, commentsSlice: 10 })
             if (response?.error?.originalStatus === 400 || response?.data === null) navigate('/es/recipe/404')
+            window.localStorage.setItem('usrlng', 'es')
             var userData = await getUserData({userID: userName})
             setCurrentRecipe(() => {
                 return response?.data?.recipe

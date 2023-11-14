@@ -5,7 +5,7 @@ import { FacebookShareButton, FacebookIcon } from "react-share"
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from "../auth/authSlice"
 import jwtDecode from 'jwt-decode'
-import { useNavigate, useParams, useLocation } from 'react-router-dom'
+import { useNavigate, useParams, /*useLocation*/ } from 'react-router-dom'
 import {
     useGetRecipeMutation,
     useUpdateRecipeMutation
@@ -29,15 +29,15 @@ const RecipePage = () => {
 
     const lgoff = window.localStorage.getItem('lgoff')
 
-    const usrlng = window.localStorage.getItem('usrlng') || ''
+    // const usrlng = window.localStorage.getItem('usrlng')
 
     const navigate = useNavigate()
 
-    const currentLocation = useLocation()
+    // const currentLocation = useLocation()
 
-    useEffect(() => {
-        if (usrlng === 'es')  navigate(`/es${currentLocation.pathname}`)
-    }, [usrlng, navigate, currentLocation])
+    // useEffect(() => {
+    //     if (usrlng === 'es')  navigate(`/es${currentLocation.pathname}`)
+    // }, [usrlng, navigate, currentLocation])
 
     var content
 
@@ -102,7 +102,8 @@ const RecipePage = () => {
     useEffect(() => {
         const fetchData = async () => {
             const response = await getRecipe({ id: id, commentsSlice: 10 })
-            if (response?.error?.originalStatus === 400 || response?.data === null || usrlng !== response?.data?.recipe?.language) navigate('/recipe/404')
+            if (response?.error?.originalStatus === 400 || response?.data === null) navigate('/recipe/404')
+            window.localStorage.setItem('usrlng', 'en')
             var userData = await getUserData({userID: userName})
             setCurrentRecipe(() => {
                 return response.data.recipe
@@ -153,7 +154,7 @@ const RecipePage = () => {
             // htmlElement.setAttribute('xmlns:fb', 'https://www.facebook.com/2008/fbml')
         }
         fetchData()
-    }, [id, getRecipe, getUserData, userID, token, getCommentedBy, navigate, usrlng, userName])
+    }, [id, getRecipe, getUserData, userID, token, getCommentedBy, navigate, userName])
 
     const handleLike = async (e) => {
         if (goComment) {

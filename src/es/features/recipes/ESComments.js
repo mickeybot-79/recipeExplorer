@@ -139,7 +139,7 @@ const Comments = ({ userID, userName, id, goComment, setGoComment, isTemp }) => 
         }
         fetchStats()
         // eslint-disable-next-line
-    }, [getRecipe, id, commentsSlice, userID, getCommentedBy])
+    }, [])
 
     const handleLikeComment = async (e, commentID) => {
         if (goComment) {

@@ -13,7 +13,7 @@ const Welcome = () => {
         // eslint-disable-next-line
     }, [])
 
-    const usrlng = window.localStorage.getItem('usrlng') || ''
+    const usrlng = window.localStorage.getItem('usrlng')
 
     const navigate = useNavigate()
 

@@ -13,7 +13,6 @@ const PageHeader = () => {
     const token = useSelector(selectCurrentToken)
     var logged = isTemp === 'n' ? true : false
     var userName = token ? jwtDecode(token).UserInfo.username : ''
-    //const userImage = window.localStorage.getItem('image')
 
     var userID = token ? jwtDecode(token).UserInfo._id : window.localStorage.getItem('temp-id')
 
