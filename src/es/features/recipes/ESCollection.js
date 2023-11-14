@@ -3,7 +3,7 @@ import { useGetRecipesDataMutation } from '../../../features/recipes/recipesApiS
 import { useNavigate } from "react-router-dom"
 import { useRemoveFromCollectionMutation, useDeleteCollectionMutation, useUpdateCollectionMutation } from '../../../features/users/usersApiSlice'
 
-const Collection = ({ selectedCollection, shrinkAnimation, closeCollection, userID }) => {
+const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation, closeCollection, userID }) => {
 
     const imageRef = useRef()
 
@@ -45,6 +45,8 @@ const Collection = ({ selectedCollection, shrinkAnimation, closeCollection, user
         animation: ''
     })
 
+    const [recipeElements, setRecipeElements] = useState()
+
     useEffect(() => {
         const fetchRecipes = async () => {
             const allRecipes = await getRecipesData({recipes: selectedCollection.recipes})
@@ -61,37 +63,64 @@ const Collection = ({ selectedCollection, shrinkAnimation, closeCollection, user
         fetchRecipes()
     }, [selectedCollection, getRecipesData])
 
-    const goRecipe = (recipeID) => {
-        navigate(`/es/recipes/${recipeID}`)
-    }
+    useEffect(() => {
+        const fetchRecipes = async () => {
+            const allRecipes = await getRecipesData({ recipes: selectedCollection.recipes })
+            setRecipeElements(() => {
+                const updatedRecipeElements = allRecipes.data.map(recipe => {
 
-    const handleRemoveRecipe = (e, recipeID) => {
-        if (e.target.parentElement.classList.contains('remove-recipe')) {
-            e.target.parentElement.classList.remove('remove-recipe')
-        } else {
-            e.target.parentElement.classList.add('remove-recipe')
-        }
-        if (!recipesToRemove.includes(recipeID)) {
-            setRecipesToRemove((prevState) => {
-                const updatedArray = [...prevState]
-                updatedArray.push(recipeID)
-                return updatedArray
+                    return (
+                        <div className="collection-recipe" key={allRecipes.data.indexOf(recipe)}>
+                            <img src={recipe[0].pictures[0]} alt="" className="collection-recipe-image" />
+                            <div className="collection-recipe-name-view">
+                                <h5>{recipe[0].name}</h5>
+                                <p onClick={() => navigate(`/es/recipes/${recipe[0].searchField}`)}>Ver Receta ➜</p>
+                            </div>
+                            <p onClick={(e) => {
+                                if (e.target.parentElement.classList.contains('remove-recipe')) {
+                                    e.target.parentElement.classList.remove('remove-recipe')
+                                } else {
+                                    e.target.parentElement.classList.add('remove-recipe')
+                                }
+                                if (!recipesToRemove.includes(recipe[0]._id)) {
+                                    setRecipesToRemove((prevState) => {
+                                        const updatedArray = [...prevState, recipe[0]._id]
+                                        return updatedArray
+                                    })
+                                } else {
+                                    if (recipesToRemove.length === 1) {
+                                        setRecipesToRemove(() => {
+                                            return []
+                                        })
+                                    } else {
+                                        setRecipesToRemove((prevState) => {
+                                            let updatedArray = [...prevState]
+                                            const recipeIndex = updatedArray.indexOf(recipe[0]._id)
+                                            updatedArray.splice(recipeIndex, 1)
+                                            return updatedArray
+                                        })
+                                    }
+                                }
+                            }} className="collection-recipe-remove">Remover receta</p>
+                        </div>
+                    )
+                })
+                return updatedRecipeElements
             })
-        } else {
-            if (recipesToRemove.length === 1) {
-                setRecipesToRemove(() => {
-                    return []
-                })
-            } else {
-                setRecipesToRemove((prevState) => {
-                    let updatedArray = [...prevState]
-                    const recipeIndex = updatedArray.indexOf(recipeID)
-                    updatedArray.splice(recipeIndex, 1)
-                    return updatedArray
-                })
-            }
+            setCollectionRecipes(() => {
+                return allRecipes
+            })
         }
-    }
+        if (collectionRecipes?.data?.length) {
+            fetchRecipes()
+        } else {
+            setRecipeElements(() => {
+                return (
+                    <p style={{ placeSelf: 'center', fontSize: '18px' }}>Aún no hay recetas.</p>
+                )
+            })
+        }
+    }, [collectionRecipes, navigate, recipesToRemove, getRecipesData, selectedCollection])
 
     const handleSaveCollection = () => {
         setDisplayRemoveConfirm(() => {
@@ -99,11 +128,6 @@ const Collection = ({ selectedCollection, shrinkAnimation, closeCollection, user
             return newDisplay
         })
         if (!recipesToRemove.length) closeCollection()
-    }
-
-    const handleDoRemove = () => {
-        removeFromCollection({recipes: recipesToRemove, userID: userID, collectionIndex: selectedCollection.collectionIndex})
-        window.location.reload()
     }
 
     const handleChange = (e) => {
@@ -148,30 +172,6 @@ const Collection = ({ selectedCollection, shrinkAnimation, closeCollection, user
     }
 
     try {
-
-        var recipeElements
-        
-        if (collectionRecipes.data.length) {
-            recipeElements = collectionRecipes.data.map(recipe => {
-
-                const imgSrc = recipe[0].language === 'es' ? recipe[0].pictures[0] : `../${recipe[0].pictures[0]}`
-
-                return (
-                    <div className="collection-recipe" key={collectionRecipes.data.indexOf(recipe)}>
-                        <img src={imgSrc} alt="" className="collection-recipe-image" />
-                        <div className="collection-recipe-name-view">
-                            <h5>{recipe[0].name}</h5>
-                            <p onClick={() => goRecipe(recipe[0].searchField)}>Ver Receta ➜</p>
-                        </div>
-                        <p onClick={(e) => handleRemoveRecipe(e, recipe[0]._id)} className="collection-recipe-remove-es">Remover receta</p>
-                    </div>
-                )
-            })
-        } else {
-            recipeElements = (
-                <p style={{placeSelf: 'center', fontSize: '18px'}}>Aún no hay recetas.</p>
-            )
-        }
 
         return (
             <>
@@ -219,7 +219,24 @@ const Collection = ({ selectedCollection, shrinkAnimation, closeCollection, user
                                 return 'none'
                             })}>Cancelar</button>
                             <button type='button' id='collection-do-delete' onClick={() => {
-                                handleDoRemove(recipesToRemove)
+                                removeFromCollection({ recipes: recipesToRemove, userID: userID, collectionIndex: selectedCollection.collectionIndex })
+                                setCollectionRecipes((prevState) => {
+                                    const updatedRecipes = []
+                                    for (let i = 0; i < prevState.length; i++) {
+                                        if (!recipesToRemove.includes(prevState[i])) updatedRecipes.push(prevState[i])
+                                    }
+                                    return updatedRecipes
+                                })
+                                setSelectedCollection((prevState) => {
+                                    const updatedRecipes = []
+                                    for (let i = 0; i < prevState.recipes.length; i++) {
+                                        if (!recipesToRemove.includes(prevState.recipes[i])) updatedRecipes.push(prevState.recipes[i])
+                                    }
+                                    return {
+                                        ...prevState,
+                                        recipes: updatedRecipes
+                                    }
+                                })
                                 setRecipesToRemove([])
                                 setDisplayRemoveConfirm('none')
                             }}>Remover</button>
@@ -327,20 +344,7 @@ const Collection = ({ selectedCollection, shrinkAnimation, closeCollection, user
     } catch (err) {
         //console.log(err)
         return (
-            <div 
-            id="collection-displayer" 
-            style={{ display: selectedCollection.display }}
-            >
-                <img
-                    src='../../../Images/favicon-gif.gif'
-                    alt='icon'
-                    style={{
-                        marginTop: '200px',
-                        width: '200px',
-                        filter: 'sepia(40%)'
-                    }}
-                />
-            </div>
+            <></>
         )
     }
 }
