@@ -340,7 +340,8 @@ const RecipePage = () => {
                             id='share-icon'
                             onClick={handleShare} />
                         <div id='share-options-container' style={{ display: displayShare }} onMouseLeave={() => setDisplayShare('none')}>
-                                <FacebookShareButton children={''} url={`https://www.localhost:3000/recipes/${currentRecipe.searchField}`} quote={currentRecipe.name}>
+                                {/* <FacebookShareButton children={''} url={`https://www.localhost:3000/recipes/${currentRecipe.searchField}`} quote={currentRecipe.name}> */}
+                                <FacebookShareButton children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}`} quote={currentRecipe.name}>
                                     <FacebookIcon />
                                 </FacebookShareButton>
                             {/* <div className='share-option' onClick={shareFacebook}>
