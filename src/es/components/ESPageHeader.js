@@ -47,12 +47,6 @@ const ESPageHeader = () => {
     }] = useSendLogoutMutation()
 
     useEffect(() => {
-        const userLng = window.localStorage.getItem('usrlng')
-        if (currentLocation.pathname === '/es/' && userLng === 'en') navigate('/')
-        // eslint-disable-next-line
-    }, [])
-
-    useEffect(() => {
         if (isSuccess) navigate('/es')
         if (!token) setDisplay('none')
     }, [isSuccess, navigate, token])
