@@ -34,7 +34,9 @@ const AccountPage = () => {
     const [logEntry] = useLogEntryMutation()
 
     const token = useSelector(selectCurrentToken)
-    var userID = token ? jwtDecode(token).UserInfo.username : window.localStorage.getItem('temp-id')
+    var userID = token ? jwtDecode(token).UserInfo.id : window.localStorage.getItem('temp-id')
+
+    var userName = token ? jwtDecode(token).UserInfo.username : window.localStorage.getItem('temp-id')
 
     const [currentUser, setCurrentUser] = useState()
 
@@ -68,7 +70,7 @@ const AccountPage = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const userData = await getUserData({ userID: userID })
+            const userData = await getUserData({ userID: userName })
             //console.log(userData)
             setCurrentUser(() => {
                 return userData.data
@@ -76,7 +78,7 @@ const AccountPage = () => {
             setCurrentUserImage(() => {
                 let finalImage
                 //const avatarImages = ['avatar1.png', 'avatar2.png', 'avatar3.png', 'avatar4.png', 'avatar5.png', 'avatar6.png']
-                if (!userData.data.image) {
+                if (!userData?.data?.image) {
                     finalImage = '../../../Images/user-icon.png'
                 } else if (userData.data.image.split('.')[1] === 'png') {
                     finalImage = `../../../Images/${userData.data.image}`
@@ -90,7 +92,7 @@ const AccountPage = () => {
             })
         }
         fetchUser()
-    }, [getUserData, userID])
+    }, [getUserData, userName])
 
     useEffect(() => {
         if (currentUserPwd.length === currentUserPwdConfirm.length && currentUserPwd !== currentUserPwdConfirm) {

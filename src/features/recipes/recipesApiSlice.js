@@ -200,7 +200,7 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
                     ingredients: ingredients, 
                     preparation: preparation, 
                     cookingTime: cookingTime, 
-                    servings: servings, 
+                    servings: servings,
                     pictures: pictures
                 }
             }),

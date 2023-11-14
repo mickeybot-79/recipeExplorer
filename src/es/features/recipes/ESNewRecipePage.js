@@ -329,7 +329,7 @@ const NewRecipePage = () => {
             lng: usrlng,
             searchField: recipeData.name.toLowerCase().replace(' ', '-')
         }
-
+        
         const canSave = [recipeData.name, recipeData.category, recipeData.ingredients[0].ingredient, finalPreparation.length].every(Boolean) && !isLoading
 
         if (canSave) {
