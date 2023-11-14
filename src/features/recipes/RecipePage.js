@@ -1,5 +1,7 @@
 // add "report" option
 import { useEffect, useState } from 'react'
+import {Helmet} from "react-helmet"
+import { FacebookShareButton, FacebookIcon } from "react-share"
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from "../auth/authSlice"
 import jwtDecode from 'jwt-decode'
@@ -120,13 +122,16 @@ const RecipePage = () => {
             // const meta1 = document.createElement('meta')
             // meta1.setAttribute('property', 'og:title')
             // meta1.setAttribute('content', `${response.data.recipe.name}`)
+            // const meta4 = document.createElement('meta')
+            // meta4.setAttribute('property', 'og:image')
+            //meta4.setAttribute('content', `${response.data.recipe.pictures[0]}`)
+            // meta4.setAttribute('content', 'https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg')
             // const meta2 = document.createElement('meta')
             // meta2.setAttribute('property', 'og:type')
             // meta2.setAttribute('content', 'website')
             // const meta3 = document.createElement('meta')
             // meta3.setAttribute('property', 'og:url')
             // meta3.setAttribute('content', 'http://localhost:3000/recipes/6522f5937595783cbe83f4ef')
-            // const meta4 = document.createElement('meta')
             // meta4.setAttribute('property', 'og:image:url')
             // meta4.setAttribute('content', `${response.data.recipe.pictures[0]}`)
             // //meta4.setAttribute('content', 'http://localhost:3000/Images/avatar1.png')
@@ -135,10 +140,12 @@ const RecipePage = () => {
             // meta5.setAttribute('content', 'Delicious recipes')
             // //console.log(headElement.hasChildNodes(meta1))
             // //headElement.appendChild(meta1)
-            // if (!headElement.hasChildNodes(meta1)) headElement.appendChild(meta1)
+            //if (!headElement.hasChildNodes(meta1)) headElement.appendChild(meta1)
+            // headElement.appendChild(meta1)
             // if (!headElement.hasChildNodes(meta2)) headElement.appendChild(meta2)
             // if (!headElement.hasChildNodes(meta3)) headElement.appendChild(meta3)
-            // if (!headElement.hasChildNodes(meta4)) headElement.appendChild(meta4)
+            //if (!headElement.hasChildNodes(meta4)) headElement.appendChild(meta4)
+            // headElement.appendChild(meta4)
             // if (!headElement.hasChildNodes(meta5)) headElement.appendChild(meta5)
             // const htmlElement = document.getElementsByTagName('html')[0]
             // htmlElement.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml')
@@ -224,8 +231,8 @@ const RecipePage = () => {
     }
 
     const shareFacebook = () => {
-        //var url = `https://www.localhost:3000/recipes/${id}`
-        var url = `https://recipes.wicked-web-worm.com`
+        var url = `https://www.localhost:3000/recipes/${currentRecipe.searchField}`
+        //var url = `https://recipes.wicked-web-worm.com`
         //var url = 'http://localhost:3000/recipes/6522f5937595783cbe83f4ef'
         console.log(url.toString())
         var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
@@ -291,7 +298,12 @@ const RecipePage = () => {
     try {
         //console.log(currentRecipe)
         content = (
-            <>
+            <>                  
+                <Helmet>
+                    <meta property="og:image" content='https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg'/>
+                    <title>{currentRecipe.name}</title>
+                    <link rel="canonical" href={`https://www.localhost:3000/recipes/${currentRecipe.searchField}`} />
+                </Helmet>
                 <div id="recipe-page-container">
                     <Recipe
                         id={id}
@@ -327,10 +339,13 @@ const RecipePage = () => {
                             id='share-icon'
                             onClick={handleShare} />
                         <div id='share-options-container' style={{ display: displayShare }} onMouseLeave={() => setDisplayShare('none')}>
-                            <div className='share-option' onClick={shareFacebook}>
+                                <FacebookShareButton children={''} url={`https://www.localhost:3000/recipes/${currentRecipe.searchField}`} quote={currentRecipe.name}>
+                                    <FacebookIcon />
+                                </FacebookShareButton>
+                            {/* <div className='share-option' onClick={shareFacebook}>
                                 <img src='../../Images/Facebook.png' alt='Facebook' className='share-icon' />
                                 <p className='share-label'>Facebook</p>
-                            </div>
+                            </div> */}
                             <div className='share-option' onClick={shareTwitter}>
                                 <img src='../../Images/X-Twitter.png' alt='Twitter' className='share-icon' />
                                 <p className='share-label'>Twitter</p>

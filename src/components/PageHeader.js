@@ -8,10 +8,6 @@ import jwtDecode from 'jwt-decode'
 
 const PageHeader = () => {
 
-    useEffect(() => {
-        //window.location.reload()
-    }, [])
-
     const navigate = useNavigate()
     const isTemp = window.sessionStorage.getItem('isTemp')
     const token = useSelector(selectCurrentToken)
