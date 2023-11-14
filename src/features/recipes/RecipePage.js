@@ -300,11 +300,11 @@ const RecipePage = () => {
         //console.log(currentRecipe)
         content = (
             <>                  
-                <Helmet>
+                {/* <Helmet>
                     <meta property="og:image" content='https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg'/>
                     <title>{currentRecipe.name}</title>
                     <link rel="canonical" href={`https://www.localhost:3000/recipes/${currentRecipe.searchField}`} />
-                </Helmet>
+                </Helmet> */}
                 <div id="recipe-page-container">
                     <Recipe
                         id={id}
