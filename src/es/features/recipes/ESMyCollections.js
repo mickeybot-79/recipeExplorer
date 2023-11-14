@@ -44,7 +44,7 @@ const MyCollections = () => {
         const fetchCollections = async () => {
             const userCollections = await getCollections({ userID: userID})
             setCollections(() => {
-                return userCollections.data.userCollections
+                return userCollections?.data?.userCollections
             })
         }
         fetchCollections()
@@ -95,7 +95,7 @@ const MyCollections = () => {
                             className="user-collection-title"
                         >{collection.name} </h3>
                     </div>
-                    <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'relative' }} className="collection-image-container">
                         <img
                             src={`../../../Images/${collection.image}`}
                             alt="collection"
@@ -124,6 +124,7 @@ const MyCollections = () => {
                     >Crear nueva colección</button>
                     <Collection
                         selectedCollection={selectedCollection}
+                        setSelectedCollection={setSelectedCollection}
                         shrinkAnimation={shrinkAnimation}
                         closeCollection={closeCollection}
                         userID={userID}

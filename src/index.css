@@ -2253,7 +2253,6 @@ body {
 #collections-container h4 {
   font-size: 25px;
   margin-top: -15px;
-  margin-left: 320px;
   margin-bottom: -15px;
   text-shadow: 4px 4px 4px rgba(8, 6, 27, 0.401);
   text-align: center;
@@ -3473,7 +3472,7 @@ body {
 
 #collection-confirm-delete-buttons-es {
   display: flex;
-  gap: 10px;
+  gap: 35px;
   margin-top: 40px;
 }
 
@@ -4833,7 +4832,6 @@ body {
 
   #collections-container h4 {
     font-size: 20px;
-    margin-left: 0px;
   }
 
   #close-collections {

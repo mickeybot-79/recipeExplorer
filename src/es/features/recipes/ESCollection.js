@@ -71,7 +71,7 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
 
                     return (
                         <div className="collection-recipe" key={allRecipes.data.indexOf(recipe)}>
-                            <img src={recipe[0].pictures[0]} alt="" className="collection-recipe-image" />
+                            <img src={`../${recipe[0].pictures[0]}`}  alt="" className="collection-recipe-image" />
                             <div className="collection-recipe-name-view">
                                 <h5>{recipe[0].name}</h5>
                                 <p onClick={() => navigate(`/es/recipes/${recipe[0].searchField}`)}>Ver Receta ➜</p>

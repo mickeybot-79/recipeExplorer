@@ -35,29 +35,29 @@ const PersistLogin = () => {
 
     const [getUserData] = useGetUserDataMutation()
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
+    //     if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
 
-            const verifyRefreshToken = async () => {
-                console.log('verifying refresh token')
-                try {
-                    await refresh()
-                    setTrueSuccess(true)
-                }
-                catch (err) {
-                    console.error(err)
-                }
-            }
+    //         const verifyRefreshToken = async () => {
+    //             console.log('verifying refresh token')
+    //             try {
+    //                 await refresh()
+    //                 setTrueSuccess(true)
+    //             }
+    //             catch (err) {
+    //                 console.error(err)
+    //             }
+    //         }
 
-            if (!token && persist) verifyRefreshToken()
-            //if (!persist && session) verifyRefreshToken()
-        }
+    //         if (!token && persist) verifyRefreshToken()
+    //         //if (!persist && session) verifyRefreshToken()
+    //     }
 
-        return () => effectRan.current = true
+    //     return () => effectRan.current = true
 
-        // eslint-disable-next-line
-    }, [])
+    //     // eslint-disable-next-line
+    // }, [])
 
     useEffect(() => {
         const doLogin = async (userID) => {
@@ -100,9 +100,26 @@ const PersistLogin = () => {
             }
         }
 
+        if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
+
+            const verifyRefreshToken = async () => {
+                console.log('verifying refresh token')
+                try {
+                    await refresh()
+                    setTrueSuccess(true)
+                }
+                catch (err) {
+                    console.error(err)
+                }
+            }
+
+            if (!token && persist) verifyRefreshToken()
+        }
+
         if (!persist) {
             if (session) {
                 if (isTemp === 'n') { // active user, logged in, session started (prevents losing the login on refresh)
+                    console.log('verifying refresh token, no persist')
                     verifyRefreshToken()
                     setTrueSuccess(true)
                 } else { // temp user, session started (renews the temp access token on refresh)
@@ -125,7 +142,9 @@ const PersistLogin = () => {
             }
         }
 
-    }, [persist, tempLogin, dispatch, addNewUser, tempUserId, session, refresh, isTemp, getUserData])
+        return () => effectRan.current = true
+
+    }, [persist, tempLogin, dispatch, addNewUser, tempUserId, session, refresh, isTemp, getUserData, token])
 
     let content
 

@@ -7,7 +7,7 @@ const Recipe = ({ currentUser }) => {
 
     const isTemp = window.sessionStorage.getItem('isTemp')
 
-    const usrlng = window.localStorage.getItem('usrlng') || ''
+    //const usrlng = window.localStorage.getItem('usrlng')
 
     const [getRecipe] = useGetRecipeMutation()
 
@@ -28,7 +28,8 @@ const Recipe = ({ currentUser }) => {
     useEffect(() => {
         const fetchData = async () => {
             const response = await getRecipe({ id: id, commentsSlice: 0 })
-            if (response?.error?.originalStatus === 400 || response?.data === null || usrlng !== response?.data?.recipe?.language) navigate('/recipe/404')
+            if (response?.error?.originalStatus === 400 || response?.data === null) navigate('/recipe/404')
+            window.localStorage.setItem('usrlng', 'en')
             setCurrentRecipe(() => {
                 return response.data.recipe
             })
@@ -38,7 +39,7 @@ const Recipe = ({ currentUser }) => {
             })
         }
         fetchData()
-    }, [id, getRecipe, navigate, getUserWhoPosted, usrlng])
+    }, [id, getRecipe, navigate, getUserWhoPosted])
 
     useEffect(() => {
         var finalUnit

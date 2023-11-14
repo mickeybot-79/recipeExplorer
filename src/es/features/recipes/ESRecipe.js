@@ -7,11 +7,9 @@ const Recipe = ({ currentUser }) => {
 
     const isTemp = window.sessionStorage.getItem('isTemp')
 
-    const usrlng = window.localStorage.getItem('usrlng') || ''
+    //const usrlng = window.localStorage.getItem('usrlng')
 
     const [getRecipe] = useGetRecipeMutation()
-
-    //const [getUserData] = useGetUserDataMutation()
 
     const [getUserWhoPosted] = useGetUserWhoPostedMutation()
 
@@ -27,8 +25,6 @@ const Recipe = ({ currentUser }) => {
 
     const [ingredientElements, setIngredientElements] = useState()
 
-    //const [displayEdit, setDisplayEdit] = useState()
-
     useEffect(() => {
         const fetchData = async () => {
             const response = await getRecipe({ id: id, commentsSlice: 0 })
@@ -43,19 +39,7 @@ const Recipe = ({ currentUser }) => {
             })
         }
         fetchData()
-    }, [id, getUserWhoPosted, getRecipe, navigate, usrlng])
-
-    // useEffect(() => {
-    //     const fetchAuthor = async () => {
-    //         const response = await getRecipe({ id: id, commentsSlice: 0 })
-    //         if (response?.error?.originalStatus === 400 || response?.data === null) navigate('/es/recipe/404')
-    //         const authorUser = await getUserData({ userID: response?.data?.recipe?.createdBy })
-    //         setRecipeAuthor(() => {
-    //             return authorUser
-    //         })
-    //     }
-    //     fetchAuthor()
-    // }, [getUserData, getRecipe, id, navigate])
+    }, [id, getUserWhoPosted, getRecipe, navigate])
 
     useEffect(() => {
         var finalUnit
