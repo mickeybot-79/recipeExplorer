@@ -88,7 +88,7 @@ const MyRecipesPage = () => {
 
         return (
             <div key={recipe._id} className='myrecipe-item-container'>
-                <img src={`${recipe.pictures}`} alt='recipe' />
+                <img src={`../${recipe.pictures}`} alt='recipe' />
                 <p
                     onClick={listener}
                     className='myrecipe-item'

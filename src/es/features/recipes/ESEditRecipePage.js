@@ -76,8 +76,13 @@ const EditRecipePage = () => {
         const fetchRecipe = async () => {
             const currentRecipe = await getRecipe({ id: id, commentsSlice: 10 })
             //console.log(currentRecipe.data.recipe._id)
+            const isTemp = window.sessionStorage.getItem('isTemp')
             if (currentRecipe.data.recipe.createdBy !== userID) { // blocks non-owners from editing recipe.
-                navigate('/es/login')
+                if (isTemp === 'n') {
+                    navigate('/es/dash')
+                } else {
+                    navigate('/es/login')
+                }
             } else {
                 setRecipeData(() => {
                     return {
