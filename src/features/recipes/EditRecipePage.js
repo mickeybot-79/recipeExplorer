@@ -15,7 +15,7 @@ const EditRecipePage = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    const usrlng = window.localStorage.getItem('usrlng') || ''
+    const usrlng = window.localStorage.getItem('usrlng')
 
     const navigate = useNavigate()
 
@@ -69,6 +69,8 @@ const EditRecipePage = () => {
     const [displayMissing, setDisplayMissing] = useState('none')
 
     const [missingMessage, setMissingMessage] = useState()
+
+    const [displayLoading, setDisplayLoading] = useState('none')
 
     const { id } = useParams()
 
@@ -262,10 +264,12 @@ const EditRecipePage = () => {
     }
 
     const handleDeleteRecipe = async () => {
+        setDisplayLoading('grid')
         await deleteRecipe({ id: recipeData.id, userID: userID })
         await removeUserRecipe({ recipeID: recipeData.id, userID: userName })
         await removeRecipeLogs({ recipeID: recipeData.id })
         window.sessionStorage.setItem('deleted', 'y')
+        setDisplayLoading('none')
         navigate('/dash/myrecipes/deleted')
     }
 
@@ -664,6 +668,9 @@ const EditRecipePage = () => {
                                 return 'none'
                             })}>Ok</button>
                         </div>
+                    </div>
+                    <div id='edit-recipe-loading' style={{ display: displayLoading }}>
+                        <div className="lds-dual-ring" style={{padding: '100px', width: '300px', height: '300px'}}></div>
                     </div>
                 </div>
                 <Prompt

@@ -68,6 +68,8 @@ const AccountPage = () => {
 
     const [pwdMismatch, setPwdMismatch] = useState('none')
 
+    const [displayLoading, setDisplayLoading] = useState('none')
+
     useEffect(() => {
         const fetchUser = async () => {
             const userData = await getUserData({ userID: userName })
@@ -349,6 +351,7 @@ const AccountPage = () => {
     }
 
     const handleSaveNewPicture = async () => {
+        setDisplayLoading('grid')
         await updateUser({
             userID: userID,
             image: currentUserImage,
@@ -358,10 +361,12 @@ const AccountPage = () => {
             active: ''
         })
         if (lgoff === 'n') logEntry({ activity: 'image', recipeID: '', userID: userID })
+        setDisplayLoading('none')
         window.location.reload()
     }
 
     const handleSaveNewCountry = async () =>{
+        setDisplayLoading('grid')
         await updateUser({
             userID: userID,
             image: '',
@@ -371,10 +376,12 @@ const AccountPage = () => {
             active: ''
         })
         if (lgoff === 'n') logEntry({ activity: 'country', recipeID: '', userID: userID })
+        setDisplayLoading('none')
         window.location.reload()
     }
 
     const handleSaveNewIntro = async () => {
+        setDisplayLoading('grid')
         await updateUser({
             userID: userID,
             image: '',
@@ -384,11 +391,13 @@ const AccountPage = () => {
             active: ''
         })
         if (lgoff === 'n') logEntry({ activity: 'about', recipeID: '', userID: userID })
+        setDisplayLoading('none')
         window.location.reload()
     }
 
     const handleSaveNewPwd = async() => {
         if (currentUserPwd === currentUserPwdConfirm) {
+            setDisplayLoading('grid')
             await updateUser({
                 userID: userID,
                 image: '',
@@ -398,11 +407,13 @@ const AccountPage = () => {
                 active: ''
             })
             if (lgoff === 'n') logEntry({ activity: 'pwd', recipeID: '', userID: userID })
+            setDisplayLoading('none')
             window.location.reload()
         }
     }
 
     const handleDeleteAccount = async () => {
+        setDisplayLoading('grid')
         sendLogout()
         await updateUser({
             userID: userID,
@@ -413,6 +424,7 @@ const AccountPage = () => {
             active: 'false'
         })
         window.sessionStorage.setItem('deleted', 'y')
+        setDisplayLoading('none')
         navigate('/dash/user/deleted')
     }
 
@@ -438,7 +450,7 @@ const AccountPage = () => {
                 <div id="edit-user-container">
                     <div id="account-container">
                         <h1 id="edit-user-title">Your Account</h1>
-                        <p className="account-option" onClick={() => navigate(`/user/${userID}`)}>View your public profile ➜</p>
+                        <p className="account-option" onClick={() => navigate(`/user/${userName}`)}>View your public profile ➜</p>
                         <p className="account-option" onClick={handleUpdateImage}>Update your profile picture ➜</p>
                         <p className="account-option" onClick={handleUpdateCountry}>Update your country ➜</p>
                         <p className="account-option" onClick={handleUpdateAbout}>Update your introduction ➜</p>
@@ -600,6 +612,9 @@ const AccountPage = () => {
                             <button type='button' id='do-delete' onClick={handleDeleteAccount}>Delete</button>
                         </div>
                     </div>
+                </div>
+                <div id='edit-recipe-loading' style={{ display: displayLoading }}>
+                    <div className="lds-dual-ring" style={{ padding: '100px', width: '300px', height: '300px' }}></div>
                 </div>
             </>
         )

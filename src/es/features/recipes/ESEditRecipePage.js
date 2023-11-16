@@ -15,7 +15,7 @@ const EditRecipePage = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    const usrlng = window.localStorage.getItem('usrlng') || ''
+    const usrlng = window.localStorage.getItem('usrlng')
 
     const navigate = useNavigate()
 
@@ -70,12 +70,13 @@ const EditRecipePage = () => {
 
     const [missingMessage, setMissingMessage] = useState()
 
+    const [displayLoading, setDisplayLoading] = useState('none')
+
     const { id } = useParams()
 
     useEffect(() => {
         const fetchRecipe = async () => {
             const currentRecipe = await getRecipe({ id: id, commentsSlice: 10 })
-            //console.log(currentRecipe.data.recipe._id)
             const isTemp = window.sessionStorage.getItem('isTemp')
             if (currentRecipe.data.recipe.createdBy !== userID) { // blocks non-owners from editing recipe.
                 if (isTemp === 'n') {
@@ -266,10 +267,12 @@ const EditRecipePage = () => {
     }
 
     const handleDeleteRecipe = async () => {
+        setDisplayLoading('grid')
         await deleteRecipe({ id: recipeData.id, userID: userID })
         await removeUserRecipe({ recipeID: recipeData.id, userID: userName })
         await removeRecipeLogs({ recipeID: recipeData.id })
         window.sessionStorage.setItem('deleted', 'y')
+        setDisplayLoading('none')
         navigate('/es/dash/myrecipes/deleted')
         //navigate to confirmation screen
     }
@@ -711,6 +714,9 @@ const EditRecipePage = () => {
                                 return 'none'
                             })}>Ok</button>
                         </div>
+                    </div>
+                    <div id='edit-recipe-loading' style={{ display: displayLoading }}>
+                        <div className="lds-dual-ring" style={{padding: '100px', width: '300px', height: '300px'}}></div>
                     </div>
                 </div>
                 <Prompt

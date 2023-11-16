@@ -362,7 +362,7 @@ const Comments = ({ userID, userName, id, goComment, setGoComment, isTemp }) => 
                             src={finalUserImage} 
                             alt='user' 
                             className='comment-user' 
-                            onClick={() => selectUser(commentUser[0]?.id, commentUser[0]?.isTempUser)}
+                            onClick={() => selectUser(commentUser[0]?.username, commentUser[0]?.isTempUser)}
                             />
                             <p className='comment-content'>{comment.content}</p>
                         </div>
