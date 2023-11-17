@@ -3426,6 +3426,10 @@ body {
   width: 120px;
 }
 
+.collection-recipe-name-view h5 {
+  max-width: 350px;
+}
+
 .remove-recipe {
   opacity: 80%;
   filter: brightness(50%);
@@ -5976,6 +5980,7 @@ body {
 
   .favorite-item {
     font-size: 20px;
+    margin-top: 0px;
   }
 
   /*My Recipes Page*/
@@ -6011,6 +6016,7 @@ body {
 
   .myrecipe-item {
     font-size: 20px;
+    margin-top: 0px;
   }
 
   /*Account Page*/

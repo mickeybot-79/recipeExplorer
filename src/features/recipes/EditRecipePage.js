@@ -77,7 +77,6 @@ const EditRecipePage = () => {
     useEffect(() => {
         const fetchRecipe = async () => {
             const currentRecipe = await getRecipe({ id: id, commentsSlice: 10 })
-            console.log(currentRecipe.data.recipe)
             if (currentRecipe.data.recipe.createdBy !== userID) { // blocks non-owners from editing recipe.
                 navigate('/login')
             } else {
@@ -401,18 +400,17 @@ const EditRecipePage = () => {
                 })
             }
 
+            const recipeImg = pictures[i].split('/')[0] === '..' ? `../../../${pictures[i]}` : pictures[i]
+
             pictureElements.push((
                 <div className="image-thumbnail" key={i}>
                     <img
-                        key={i}
-                        src={pictures[i]}
+                        src={recipeImg}
+                        //src='../../../../../../Images/Recipes/banana cake.jpg'
                         alt=''
                     />
                     <div className="X-container">
-                        <p
-                            key={i + 1}
-                            onClick={listener}
-                        >✖</p>
+                        <p onClick={listener}>✖</p>
                     </div>
                 </div>
             ))

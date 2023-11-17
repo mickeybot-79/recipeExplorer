@@ -424,15 +424,11 @@ const NewRecipePage = () => {
         pictureElements.push((
             <div className="image-thumbnail" key={i}>
                 <img
-                    key={i}
                     src={pictures[i]}
                     alt=''
                 />
                 <div className="X-container">
-                    <p
-                        key={i + 1}
-                        onClick={listener}
-                    >✖</p>
+                    <p onClick={listener}>✖</p>
                 </div>
             </div>
         ))

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useRemoveFromCollectionMutation, useDeleteCollectionMutation, useUpdateCollectionMutation } from '../users/usersApiSlice'
 
-const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation, closeCollection, userID }) => {
+const Collection = ({ selectedCollection, setSelectedCollection, collections, setCollections, shrinkAnimation, closeCollection, userID }) => {
 
     const imageRef = useRef()
 
@@ -41,11 +41,9 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
 
     const [recipeElements, setRecipeElements] = useState()
 
-    const [edited, setEdited] = useState(false)
 
     useEffect(() => {
-        //console.log(selectedCollection)
-        if (selectedCollection?.recipes?.data?.length && edited === false) {
+        if (selectedCollection?.recipes?.data?.length) {
             setRecipeElements(() => {
                 const allElements = selectedCollection.recipes.data.map(recipe => {
     
@@ -87,12 +85,10 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                 })
                 return allElements
             })
-            setEdited(true) 
         }
-    }, [selectedCollection, navigate, recipesToRemove, edited])
+    }, [selectedCollection, navigate, recipesToRemove])
 
     useEffect(() => {
-        //console.log(selectedCollection)
         setEditCollectionData(() => {
             return {
                 name: selectedCollection.name,
@@ -168,11 +164,24 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
             }
             return updatedRecipeElements
         })
+        setCollections(() => {
+            const currentCollection = collections.filter(collection => collection.name === selectedCollection.name)[0]
+            const updatedRecipes = []
+            for (let i = 0; i < currentCollection.recipes.data.length; i++) {
+                if (!recipesToRemove.includes(currentCollection.recipes.data[i]._id)) {
+                    updatedRecipes.push(currentCollection.recipes.data[i])
+                }
+            }
+            currentCollection.recipes.data = [...updatedRecipes]
+            const updatedCollections = [...collections]
+            updatedCollections.splice(collections.indexOf(currentCollection), 1, currentCollection)
+            return updatedCollections
+        })
         setSelectedCollection((prevState) => {
             const updatedRecipes = []
-            for (let i = 0; i < prevState.recipes.length; i++) {
-                if (!recipesToRemove.includes(prevState.recipes[i]._id)) {
-                    updatedRecipes.push(prevState.recipes[i])
+            for (let i = 0; i < prevState.recipes.data.length; i++) {
+                if (!recipesToRemove.includes(prevState.recipes.data[i]._id)) {
+                    updatedRecipes.push(prevState.recipes.data[i])
                 }
             }
             return {

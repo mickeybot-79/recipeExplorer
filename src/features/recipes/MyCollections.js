@@ -50,7 +50,6 @@ const MyCollections = () => {
         const fetchCollections = async () => {
             setDisplayLoading('grid')
             const userCollections = await getCollections({ userID: userID })
-            console.log(userCollections)
             const allCollections = []
             for (let i = 0; i < userCollections.data.userCollections.length; i++) {
                 const currentCollectionRecipes = await getCollectionRecipesData({recipes: userCollections.data.userCollections[i].recipes})
@@ -60,7 +59,6 @@ const MyCollections = () => {
                     recipes: currentCollectionRecipes
                 })
             }
-            console.log(allCollections)
             setCollections(() => {
                 return allCollections
             })
@@ -145,6 +143,8 @@ const MyCollections = () => {
                     <Collection
                         selectedCollection={selectedCollection}
                         setSelectedCollection={setSelectedCollection}
+                        collections={collections}
+                        setCollections={setCollections}
                         shrinkAnimation={shrinkAnimation}
                         closeCollection={closeCollection}
                         userID={userID}

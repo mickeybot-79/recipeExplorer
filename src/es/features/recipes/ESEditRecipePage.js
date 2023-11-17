@@ -96,6 +96,7 @@ const EditRecipePage = () => {
                         id: currentRecipe.data.recipe._id
                     }
                 })
+                console.log(currentRecipe.data.recipe.pictures)
                 setPictures(() => {
                     return currentRecipe.data.recipe.pictures
                 })
@@ -401,8 +402,6 @@ const EditRecipePage = () => {
         setDisplayLoading('none')
     }
 
-    //console.log(recipeData)
-
     try {
 
         // Elements
@@ -437,6 +436,7 @@ const EditRecipePage = () => {
         const pictureElements = []
 
         for (let i = 0; i < pictures.length; i++) {
+            console.log(pictures[i])
 
             const listener = () => {
                 setPictures((prevPictures) => {
@@ -450,21 +450,20 @@ const EditRecipePage = () => {
                 })
             }
 
-            pictureElements.push((
+            const recipeImg = pictures[i].split('/')[0] === '..' ? `../../../${pictures[i]}` : pictures[i]
+
+            pictureElements.push(
                 <div className="image-thumbnail" key={i}>
                     <img
-                        key={i}
-                        src={pictures[i]}
-                        alt=''
+                        src={recipeImg}
+                        //src='../../../../Images/Recipes/banana cake.jpg'
+                        alt='recipe'
                     />
                     <div className="X-container">
-                        <p
-                            key={i + 1}
-                            onClick={listener}
-                        >✖</p>
+                        <p onClick={listener}>✖</p>
                     </div>
                 </div>
-            ))
+            )
         }
 
         const units = [

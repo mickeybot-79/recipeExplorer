@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useRemoveFromCollectionMutation, useDeleteCollectionMutation, useUpdateCollectionMutation } from '../../../features/users/usersApiSlice'
 
-const ESCollection = ({ selectedCollection, setSelectedCollection, shrinkAnimation, closeCollection, userID }) => {
+const ESCollection = ({ selectedCollection, setSelectedCollection, collections, setCollections, shrinkAnimation, closeCollection, userID }) => {
 
     const imageRef = useRef()
 
@@ -40,16 +40,15 @@ const ESCollection = ({ selectedCollection, setSelectedCollection, shrinkAnimati
 
     const [recipeElements, setRecipeElements] = useState()
 
-    const [edited, setEdited] = useState(false)
-
     useEffect(() => {
-        if (selectedCollection?.recipes?.data?.length && edited === false) {
+        if (selectedCollection?.recipes?.data?.length) {
             setRecipeElements(() => {
                 const allElements = selectedCollection.recipes.data.map(recipe => {
+                    const recipeImg = recipe.pictures[0].split('/')[0] === '..' ? `../${recipe.pictures[0]}` : recipe.pictures[0]
     
                     return (
                         <div className="collection-recipe" key={recipe._id}>
-                            <img src={`../${recipe.pictures[0]}`} alt="" className="collection-recipe-image" />
+                            <img src={recipeImg} alt="" className="collection-recipe-image" />
                             <div className="collection-recipe-name-view">
                                 <h5>{recipe.name}</h5>
                                 <p onClick={() => navigate(`/recipes/${recipe.searchField}`)}>Ver Receta ➜</p>
@@ -79,15 +78,14 @@ const ESCollection = ({ selectedCollection, setSelectedCollection, shrinkAnimati
                                         })
                                     }
                                 }
-                            }} className="collection-recipe-remove">Remover receta</p>
+                            }} className="collection-recipe-remove-es">Remover receta</p>
                         </div>
                     )
                 })
                 return allElements
             })
-            setEdited(true)
         }
-    }, [selectedCollection, navigate, recipesToRemove, edited])
+    }, [selectedCollection, navigate, recipesToRemove])
 
     useEffect(() => {
         setEditCollectionData(() => {
@@ -165,11 +163,24 @@ const ESCollection = ({ selectedCollection, setSelectedCollection, shrinkAnimati
             }
             return updatedRecipeElements
         })
+        setCollections(() => {
+            const currentCollection = collections.filter(collection => collection.name === selectedCollection.name)[0]
+            const updatedRecipes = []
+            for (let i = 0; i < currentCollection.recipes.data.length; i++) {
+                if (!recipesToRemove.includes(currentCollection.recipes.data[i]._id)) {
+                    updatedRecipes.push(currentCollection.recipes.data[i])
+                }
+            }
+            currentCollection.recipes.data = [...updatedRecipes]
+            const updatedCollections = [...collections]
+            updatedCollections.splice(collections.indexOf(currentCollection), 1, currentCollection)
+            return updatedCollections
+        })
         setSelectedCollection((prevState) => {
             const updatedRecipes = []
-            for (let i = 0; i < prevState.recipes.length; i++) {
-                if (!recipesToRemove.includes(prevState.recipes[i]._id)) {
-                    updatedRecipes.push(prevState.recipes[i])
+            for (let i = 0; i < prevState.recipes.data.length; i++) {
+                if (!recipesToRemove.includes(prevState.recipes.data[i]._id)) {
+                    updatedRecipes.push(prevState.recipes.data[i])
                 }
             }
             return {

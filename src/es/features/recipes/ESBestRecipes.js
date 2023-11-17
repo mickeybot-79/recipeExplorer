@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-//import { useGetRecipesQuery } from './recipesApiSlice'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useGetBestRecipesMutation } from '../../../features/recipes/recipesApiSlice'
 import LoadingIcon from '../../../components/LoadingIcon'
@@ -26,7 +25,7 @@ const BestRecipes = () => {
 
     useEffect(() => {
         const usrLng = window.localStorage.getItem('usrlng')
-        console.log(usrLng)
+        //console.log(usrLng)
         const fetchBestRecipes = async () => {
             const recipes = await getBestRecipes({lng: usrLng})
             setBestRecipes(() => {
