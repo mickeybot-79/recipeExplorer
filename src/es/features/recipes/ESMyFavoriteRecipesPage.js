@@ -99,7 +99,7 @@ const MyFavoriteRecipesPage = () => {
 
         return (
             <div key={recipe[0]?._id} className='favorite-item-container'>
-                <img src={`${recipe[0]?.pictures[0]}`} alt='recipe' />
+                <img src={`../${recipe[0]?.pictures[0]}`} alt='recipe' />
                 <p
                     onClick={listener}
                     className='favorite-item'

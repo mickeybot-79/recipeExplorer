@@ -279,6 +279,7 @@ const EditRecipePage = () => {
 
     async function handleSubmit(event) {
         setIsBlocking(false)
+        setDisplayLoading('grid')
         event.preventDefault()
 
         var finalPreparation = []
@@ -397,6 +398,7 @@ const EditRecipePage = () => {
                 return 'grid'
             })
         }
+        setDisplayLoading('none')
     }
 
     //console.log(recipeData)

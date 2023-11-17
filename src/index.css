@@ -3127,7 +3127,7 @@ body {
 #account-confirm-password {
   font-family: 'Patua One', cursive;
   font-size: 15px;
-  width: 250px;
+  width: 220px;
   height: 30px;
   margin-right: 0px;
   margin-left: auto;
@@ -3437,6 +3437,8 @@ body {
   margin-top: 85px;
   color: rgb(187, 15, 15);
   cursor: pointer;
+  height: 30px;
+  width: fit-content;
 }
 
 .collection-recipe-remove-es {
@@ -3445,6 +3447,8 @@ body {
   margin-top: 85px;
   color: rgb(187, 15, 15);
   cursor: pointer;
+  height: 30px;
+  width: fit-content;
 }
 
 #collection-confirmation-container {
@@ -6365,7 +6369,9 @@ body {
     margin-left: -118px;
     margin-top: 65px;
     font-size: 15px;
-    width: 150px;
+    height: 30px;
+    width: fit-content;
+    z-index: 2;
   }
 
   .collection-recipe-remove-es {
@@ -6373,9 +6379,9 @@ body {
     margin-left: -130px;
     margin-top: 65px;
     font-size: 15px;
-    width: 150px;
-    height: 20px;
-    z-index: 1;
+    height: 30px;
+    width: fit-content;
+    z-index: 2;
   }
 
   #collection-recipes-confirm-delete {

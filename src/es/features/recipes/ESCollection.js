@@ -1,23 +1,18 @@
 import { useEffect, useRef, useState } from "react"
-import { useGetRecipesDataMutation } from '../../../features/recipes/recipesApiSlice'
 import { useNavigate } from "react-router-dom"
 import { useRemoveFromCollectionMutation, useDeleteCollectionMutation, useUpdateCollectionMutation } from '../../../features/users/usersApiSlice'
 
-const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation, closeCollection, userID }) => {
+const ESCollection = ({ selectedCollection, setSelectedCollection, shrinkAnimation, closeCollection, userID }) => {
 
     const imageRef = useRef()
 
     const navigate = useNavigate()
-
-    const [getRecipesData] = useGetRecipesDataMutation()
 
     const [removeFromCollection] = useRemoveFromCollectionMutation()
 
     const [deleteCollection] = useDeleteCollectionMutation()
 
     const [updateCollection] = useUpdateCollectionMutation()
-
-    const [collectionRecipes, setCollectionRecipes] = useState()
 
     const [recipesToRemove, setRecipesToRemove] = useState([])
 
@@ -27,7 +22,7 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
 
     const [editCollectionData, setEditCollectionData] = useState({
         name: '',
-        image:''
+        image: ''
     })
 
     const [displayLimit, setDisplayLimit] = useState({
@@ -35,8 +30,6 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
         animation: '',
         message: ''
     })
-
-    //const [displayEditPicture, setDisplayEditPicture] = useState('none')
 
     const [editAnimation, setEditAnimation] = useState()
 
@@ -47,34 +40,19 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
 
     const [recipeElements, setRecipeElements] = useState()
 
-    useEffect(() => {
-        const fetchRecipes = async () => {
-            const allRecipes = await getRecipesData({recipes: selectedCollection.recipes})
-            setCollectionRecipes (() => {
-                return allRecipes
-            })
-            setEditCollectionData((prevState) => {
-                return {
-                    ...prevState,
-                    name: selectedCollection.name
-                }
-            })
-        }
-        fetchRecipes()
-    }, [selectedCollection, getRecipesData])
+    const [edited, setEdited] = useState(false)
 
     useEffect(() => {
-        const fetchRecipes = async () => {
-            const allRecipes = await getRecipesData({ recipes: selectedCollection.recipes })
+        if (selectedCollection?.recipes?.data?.length && edited === false) {
             setRecipeElements(() => {
-                const updatedRecipeElements = allRecipes.data.map(recipe => {
-
+                const allElements = selectedCollection.recipes.data.map(recipe => {
+    
                     return (
-                        <div className="collection-recipe" key={allRecipes.data.indexOf(recipe)}>
-                            <img src={`../${recipe[0].pictures[0]}`}  alt="" className="collection-recipe-image" />
+                        <div className="collection-recipe" key={recipe._id}>
+                            <img src={`../${recipe.pictures[0]}`} alt="" className="collection-recipe-image" />
                             <div className="collection-recipe-name-view">
-                                <h5>{recipe[0].name}</h5>
-                                <p onClick={() => navigate(`/es/recipes/${recipe[0].searchField}`)}>Ver Receta ➜</p>
+                                <h5>{recipe.name}</h5>
+                                <p onClick={() => navigate(`/recipes/${recipe.searchField}`)}>Ver Receta ➜</p>
                             </div>
                             <p onClick={(e) => {
                                 if (e.target.parentElement.classList.contains('remove-recipe')) {
@@ -82,9 +60,9 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                                 } else {
                                     e.target.parentElement.classList.add('remove-recipe')
                                 }
-                                if (!recipesToRemove.includes(recipe[0]._id)) {
+                                if (!recipesToRemove.includes(recipe._id)) {
                                     setRecipesToRemove((prevState) => {
-                                        const updatedArray = [...prevState, recipe[0]._id]
+                                        const updatedArray = [...prevState, recipe._id]
                                         return updatedArray
                                     })
                                 } else {
@@ -95,7 +73,7 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                                     } else {
                                         setRecipesToRemove((prevState) => {
                                             let updatedArray = [...prevState]
-                                            const recipeIndex = updatedArray.indexOf(recipe[0]._id)
+                                            const recipeIndex = updatedArray.indexOf(recipe._id)
                                             updatedArray.splice(recipeIndex, 1)
                                             return updatedArray
                                         })
@@ -105,22 +83,20 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                         </div>
                     )
                 })
-                return updatedRecipeElements
+                return allElements
             })
-            setCollectionRecipes(() => {
-                return allRecipes
-            })
+            setEdited(true)
         }
-        if (collectionRecipes?.data?.length) {
-            fetchRecipes()
-        } else {
-            setRecipeElements(() => {
-                return (
-                    <p style={{ placeSelf: 'center', fontSize: '18px' }}>Aún no hay recetas.</p>
-                )
-            })
-        }
-    }, [collectionRecipes, navigate, recipesToRemove, getRecipesData, selectedCollection])
+    }, [selectedCollection, navigate, recipesToRemove, edited])
+
+    useEffect(() => {
+        setEditCollectionData(() => {
+            return {
+                name: selectedCollection.name,
+                image: selectedCollection.image
+            }
+        })
+    }, [selectedCollection])
 
     const handleSaveCollection = () => {
         setDisplayRemoveConfirm(() => {
@@ -132,7 +108,7 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
 
     const handleChange = (e) => {
         setEditCollectionData((prevState) => {
-            return{
+            return {
                 ...prevState,
                 name: e.target.value
             }
@@ -140,8 +116,7 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
     }
 
     const handleDeleteCollection = async () => {
-        await deleteCollection({userID: userID, collectionIndex: selectedCollection.collectionIndex})
-        window.location.reload()
+        await deleteCollection({ userID: userID, collectionIndex: selectedCollection.collectionIndex })
     }
 
     const handleUpdateCollection = async () => {
@@ -150,12 +125,20 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                 return {
                     display: 'grid',
                     animation: 'new-collection-in 0.2s linear 1',
-                    message: 'La colección requiere un nombre'
+                    message: 'Asignar un nombre a la colección'
                 }
             })
         } else {
             await updateCollection({ userID: userID, collectionIndex: selectedCollection.collectionIndex, name: editCollectionData.name, image: editCollectionData.image })
-            window.location.reload()
+            setEditAnimation(() => {
+                return 'new-collection-out 0.2s linear 1'
+            })
+            setTimeout(() => {
+                setDisplayCollectionEdit(() => {
+                    return 'none'
+                })
+                closeCollection()
+            }, 150)
         }
     }
 
@@ -169,6 +152,33 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                 image: `${e.target.name}.png`
             }
         })
+    }
+
+    const handleDoRemove = () => {
+        removeFromCollection({ recipes: recipesToRemove, userID: userID, collectionIndex: selectedCollection.collectionIndex })
+        setRecipeElements((prevState) => {
+            const updatedRecipeElements = []
+            for (let i = 0; i < prevState.length; i++) {
+                if (!recipesToRemove.includes(prevState[i].key)) {
+                    updatedRecipeElements.push(prevState[i])
+                }
+            }
+            return updatedRecipeElements
+        })
+        setSelectedCollection((prevState) => {
+            const updatedRecipes = []
+            for (let i = 0; i < prevState.recipes.length; i++) {
+                if (!recipesToRemove.includes(prevState.recipes[i]._id)) {
+                    updatedRecipes.push(prevState.recipes[i])
+                }
+            }
+            return {
+                ...prevState,
+                recipes: updatedRecipes
+            }
+        })
+        setRecipesToRemove([])
+        setDisplayRemoveConfirm('none')
     }
 
     try {
@@ -214,46 +224,25 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                 <div id="collection-confirmation-container" style={{ display: displayRemoveConfirm }}>
                     <div id='collection-recipes-confirm-delete'>
                         <p>¿Remover las recetas seleccionadas?</p>
-                        <div id='collection-confirm-delete-buttons-es'>
+                        <div id='collection-confirm-delete-buttons'>
                             <button type='button' id='collection-cancel-delete' onClick={() => setDisplayRemoveConfirm(() => {
                                 return 'none'
                             })}>Cancelar</button>
-                            <button type='button' id='collection-do-delete' onClick={() => {
-                                removeFromCollection({ recipes: recipesToRemove, userID: userID, collectionIndex: selectedCollection.collectionIndex })
-                                setCollectionRecipes((prevState) => {
-                                    const updatedRecipes = []
-                                    for (let i = 0; i < prevState.length; i++) {
-                                        if (!recipesToRemove.includes(prevState[i])) updatedRecipes.push(prevState[i])
-                                    }
-                                    return updatedRecipes
-                                })
-                                setSelectedCollection((prevState) => {
-                                    const updatedRecipes = []
-                                    for (let i = 0; i < prevState.recipes.length; i++) {
-                                        if (!recipesToRemove.includes(prevState.recipes[i])) updatedRecipes.push(prevState.recipes[i])
-                                    }
-                                    return {
-                                        ...prevState,
-                                        recipes: updatedRecipes
-                                    }
-                                })
-                                setRecipesToRemove([])
-                                setDisplayRemoveConfirm('none')
-                            }}>Remover</button>
+                            <button type='button' id='collection-do-delete' onClick={handleDoRemove}>Remover</button>
                         </div>
                     </div>
                 </div>
-                <div id="edit-collection-container" style={{display: displayCollectionEdit}} >
-                    <div id="edit-collection-div" style={{animation: editAnimation}}>
+                <div id="edit-collection-container" style={{ display: displayCollectionEdit }} >
+                    <div id="edit-collection-div" style={{ animation: editAnimation }}>
                         <div id="edit-collection-title">
-                            <label className="edit-collection-label"> Nombre de la colección:</label>
+                            <label className="edit-collection-label">Nombre de la colección:</label>
                             <input
                                 type='text'
                                 onChange={(e) => handleChange(e)}
                                 name='name'
                                 value={editCollectionData.name}
                                 id="edit-collection-name"
-                                placeholder="Collection name"
+                                placeholder="Nombre de la colección"
                             />
                         </div>
                         <div id="edit-image-container">
@@ -267,17 +256,17 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                         </div>
                         <div id="edit-buttons-container">
                             <div id="save-cancel-buttons">
-                            <button type="button" id="edit-collection-cancel" onClick={() => {
-                                setEditAnimation(() => {
-                                    return 'new-collection-out 0.2s linear 1'
-                                })
-                                setTimeout(() => {
-                                    setDisplayCollectionEdit(() => {
-                                        return 'none'
+                                <button type="button" id="edit-collection-cancel" onClick={() => {
+                                    setEditAnimation(() => {
+                                        return 'new-collection-out 0.2s linear 1'
                                     })
-                                }, 150)
-                            }}>Cancelar</button>
-                            <button type="button" id="edit-collection-save" onClick={handleUpdateCollection}>Guardar</button>
+                                    setTimeout(() => {
+                                        setDisplayCollectionEdit(() => {
+                                            return 'none'
+                                        })
+                                    }, 150)
+                                }}>Cancelar</button>
+                                <button type="button" id="edit-collection-save" onClick={handleUpdateCollection}>Guardar</button>
                             </div>
                             <button type="button" id="edit-collection-delete" onClick={() => {
                                 setDisplayConfirmDelete(() => {
@@ -318,35 +307,35 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                     </div>
                 </div>
                 <div id='display-limit-container' style={{ display: displayLimit.display }}>
-                <div id='display-limit' style={{ animation: displayLimit.animation }}>
-                    <p>{displayLimit.message}</p>
-                    <button type='button' onClick={() => {
-                        setDisplayLimit((prevState) => {
-                            return {
-                                ...prevState,
-                                animation: 'new-collection-out 0.2s linear 1'
-                            }
-                        })
-                        setTimeout(() => {
+                    <div id='display-limit' style={{ animation: displayLimit.animation }}>
+                        <p>{displayLimit.message}</p>
+                        <button type='button' onClick={() => {
                             setDisplayLimit((prevState) => {
                                 return {
                                     ...prevState,
-                                    display: 'none'
+                                    animation: 'new-collection-out 0.2s linear 1'
                                 }
                             })
-                        }, 150)
-                    }}>Ok</button>
+                            setTimeout(() => {
+                                setDisplayLimit((prevState) => {
+                                    return {
+                                        ...prevState,
+                                        display: 'none'
+                                    }
+                                })
+                            }, 150)
+                        }}>Ok</button>
+                    </div>
                 </div>
-            </div>
             </>
         )
 
     } catch (err) {
-        //console.log(err)
+        console.log(err)
         return (
             <></>
         )
     }
 }
 
-export default Collection
+export default ESCollection

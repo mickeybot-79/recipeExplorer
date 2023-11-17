@@ -7,12 +7,6 @@ const Welcome = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    useEffect(() => {
-        const userLng = window.localStorage.getItem('usrlng')
-        if (userLng === 'es') navigate('/es/')
-        // eslint-disable-next-line
-    }, [])
-
     const usrlng = window.localStorage.getItem('usrlng')
 
     const navigate = useNavigate()

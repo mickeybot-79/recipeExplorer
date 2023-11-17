@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useGetCollectionsMutation } from '../users/usersApiSlice'
+import { useGetCollectionRecipesDataMutation } from '../recipes/recipesApiSlice'
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from "../auth/authSlice"
 import jwtDecode from 'jwt-decode'
@@ -25,10 +26,13 @@ const MyCollections = () => {
 
     const [getCollections] = useGetCollectionsMutation()
 
-    const [collections, setCollections] = useState()
+    const [getCollectionRecipesData] = useGetCollectionRecipesDataMutation()
+
+    const [collections, setCollections] = useState([])
 
     const [selectedCollection, setSelectedCollection] = useState({
         name: '',
+        image: '',
         collectionIndex: 0,
         recipes: [],
         display: 'none'
@@ -40,20 +44,36 @@ const MyCollections = () => {
 
     const [newCollectionAnimation, setNewCollectionAnimation] = useState('')
 
+    const [displayLoading, setDisplayLoading] = useState('none')
+
     useEffect(() => {
         const fetchCollections = async () => {
-            const userCollections = await getCollections({ userID: userID})
+            setDisplayLoading('grid')
+            const userCollections = await getCollections({ userID: userID })
+            console.log(userCollections)
+            const allCollections = []
+            for (let i = 0; i < userCollections.data.userCollections.length; i++) {
+                const currentCollectionRecipes = await getCollectionRecipesData({recipes: userCollections.data.userCollections[i].recipes})
+                allCollections.push({
+                    name: userCollections.data.userCollections[i].name,
+                    image: userCollections.data.userCollections[i].image,
+                    recipes: currentCollectionRecipes
+                })
+            }
+            console.log(allCollections)
             setCollections(() => {
-                return userCollections?.data?.userCollections
+                return allCollections
             })
+            setDisplayLoading('none')
         }
         fetchCollections()
-    }, [userID, getCollections])
+    }, [userID, getCollections,getCollectionRecipesData])
 
     const selectCollection = (collection, currentCollectionIndex) => {
         setSelectedCollection(() => {
             return {
                 name: collection.name,
+                image: collection.image,
                 collectionIndex: currentCollectionIndex,
                 recipes: collection.recipes,
                 display: 'grid'
@@ -136,13 +156,33 @@ const MyCollections = () => {
                     newCollectionAnimation={newCollectionAnimation}
                     setNewCollectionAnimation={setNewCollectionAnimation}
                 />
+                <div style={{
+                    width: '100%',
+                    height: '100%',
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    placeContent: 'center',
+                    display: displayLoading
+                }}>
+                    <img
+                        src='../../../Images/favicon-gif.gif'
+                        alt='icon'
+                        style={{
+                            marginTop: '-100px',
+                            width: '150px',
+                            filter: 'sepia(40%)'
+                        }}
+                    />
+                    <p style={{marginLeft: '40px'}}>Loading...</p>
+                </div>
             </>
         )
 
     } catch (err) {
         //console.log(err)
         return (
-            <LoadingIcon />
+            <LoadingIcon imgSrc={`../../Images/favicon-gif.gif`}/>
         )
     }
 

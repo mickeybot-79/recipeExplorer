@@ -13,7 +13,7 @@ const Dashboard = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    const usrlng = window.localStorage.getItem('usrlng') || ''
+    const usrlng = window.localStorage.getItem('usrlng')
 
     const navigate = useNavigate()
 
@@ -90,16 +90,16 @@ const Dashboard = () => {
             var activityItem
             switch (activityType) {
                 case 'like':
-                    activityItem = (<p key={i} className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>Te gustó <Link to={`/es/recipes/${recipeName[0][0]._id}`}>{recipeName[0][0].name}</Link> - {`(hace ${timeValue})`}</p>)
+                    activityItem = (<p key={i} className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>Te gustó <Link to={`/es/recipes/${recipeName[0][0].searchField}`}>{recipeName[0][0].name}</Link> - {`(hace ${timeValue})`}</p>)
                     break
                 case 'comment':
-                    activityItem = (<p key={i} className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>Comentaste en <Link to={`/es/recipes/${recipeName[0][0]._id}`}>{recipeName[0][0].name}</Link> - {`(hace ${timeValue})`}</p>)
+                    activityItem = (<p key={i} className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>Comentaste en <Link to={`/es/recipes/${recipeName[0][0].searchField}`}>{recipeName[0][0].name}</Link> - {`(hace ${timeValue})`}</p>)
                     break
                 case 'newRecipe':
-                    activityItem = (<p key={i} className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>Publicaste <Link to={`/es/recipes/${recipeName[0][0]._id}`}>{recipeName[0][0].name}</Link> - {`(hace ${timeValue})`}</p>)
+                    activityItem = (<p key={i} className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>Publicaste <Link to={`/es/recipes/${recipeName[0][0].searchField}`}>{recipeName[0][0].name}</Link> - {`(hace ${timeValue})`}</p>)
                     break
                 case 'favorite':
-                    activityItem = (<p key={i} className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>Agregaste <Link to={`/es/recipes/${recipeName[0][0]._id}`}>{recipeName[0][0].name}</Link> a favoritos - {`(hace ${timeValue})`}</p>)
+                    activityItem = (<p key={i} className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>Agregaste <Link to={`/es/recipes/${recipeName[0][0].searchField}`}>{recipeName[0][0].name}</Link> a favoritos - {`(hace ${timeValue})`}</p>)
                     break
                 case 'image':
                     activityItem = (<p key={i} className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>Actualizaste tu imagen de perfil - {`(hace ${timeValue})`}</p>)

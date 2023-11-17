@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { useGetRecipesDataMutation } from '../recipes/recipesApiSlice'
+//import { useGetRecipesDataMutation } from '../recipes/recipesApiSlice'
 import { useNavigate } from "react-router-dom"
 import { useRemoveFromCollectionMutation, useDeleteCollectionMutation, useUpdateCollectionMutation } from '../users/usersApiSlice'
 
@@ -9,15 +9,11 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
 
     const navigate = useNavigate()
 
-    const [getRecipesData] = useGetRecipesDataMutation()
-
     const [removeFromCollection] = useRemoveFromCollectionMutation()
 
     const [deleteCollection] = useDeleteCollectionMutation()
 
     const [updateCollection] = useUpdateCollectionMutation()
-
-    const [collectionRecipes, setCollectionRecipes] = useState()
 
     const [recipesToRemove, setRecipesToRemove] = useState([])
 
@@ -45,34 +41,20 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
 
     const [recipeElements, setRecipeElements] = useState()
 
-    useEffect(() => {
-        const fetchRecipes = async () => {
-            const allRecipes = await getRecipesData({ recipes: selectedCollection.recipes })
-            setCollectionRecipes(() => {
-                return allRecipes
-            })
-            setEditCollectionData((prevState) => {
-                return {
-                    ...prevState,
-                    name: selectedCollection.name
-                }
-            })
-        }
-        fetchRecipes()
-    }, [selectedCollection, getRecipesData])
+    const [edited, setEdited] = useState(false)
 
     useEffect(() => {
-        const fetchRecipes = async () => {
-            const allRecipes = await getRecipesData({ recipes: selectedCollection.recipes })
+        //console.log(selectedCollection)
+        if (selectedCollection?.recipes?.data?.length && edited === false) {
             setRecipeElements(() => {
-                const updatedRecipeElements = allRecipes.data.map(recipe => {
-
+                const allElements = selectedCollection.recipes.data.map(recipe => {
+    
                     return (
-                        <div className="collection-recipe" key={allRecipes.data.indexOf(recipe)}>
-                            <img src={`${recipe[0].pictures[0]}`} alt="" className="collection-recipe-image" />
+                        <div className="collection-recipe" key={recipe._id}>
+                            <img src={`${recipe.pictures[0]}`} alt="" className="collection-recipe-image" />
                             <div className="collection-recipe-name-view">
-                                <h5>{recipe[0].name}</h5>
-                                <p onClick={() => navigate(`/recipes/${recipe[0].searchField}`)}>View Recipe ➜</p>
+                                <h5>{recipe.name}</h5>
+                                <p onClick={() => navigate(`/recipes/${recipe.searchField}`)}>View Recipe ➜</p>
                             </div>
                             <p onClick={(e) => {
                                 if (e.target.parentElement.classList.contains('remove-recipe')) {
@@ -80,9 +62,9 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                                 } else {
                                     e.target.parentElement.classList.add('remove-recipe')
                                 }
-                                if (!recipesToRemove.includes(recipe[0]._id)) {
+                                if (!recipesToRemove.includes(recipe._id)) {
                                     setRecipesToRemove((prevState) => {
-                                        const updatedArray = [...prevState, recipe[0]._id]
+                                        const updatedArray = [...prevState, recipe._id]
                                         return updatedArray
                                     })
                                 } else {
@@ -93,7 +75,7 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                                     } else {
                                         setRecipesToRemove((prevState) => {
                                             let updatedArray = [...prevState]
-                                            const recipeIndex = updatedArray.indexOf(recipe[0]._id)
+                                            const recipeIndex = updatedArray.indexOf(recipe._id)
                                             updatedArray.splice(recipeIndex, 1)
                                             return updatedArray
                                         })
@@ -103,22 +85,21 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                         </div>
                     )
                 })
-                return updatedRecipeElements
+                return allElements
             })
-            setCollectionRecipes(() => {
-                return allRecipes
-            })
+            setEdited(true) 
         }
-        if (collectionRecipes?.data?.length) {
-            fetchRecipes()
-        } else {
-            setRecipeElements(() => {
-                return (
-                    <p style={{ placeSelf: 'center', fontSize: '18px' }}>No recipes yet.</p>
-                )
-            })
-        }
-    }, [collectionRecipes, navigate, recipesToRemove, getRecipesData, selectedCollection])
+    }, [selectedCollection, navigate, recipesToRemove, edited])
+
+    useEffect(() => {
+        //console.log(selectedCollection)
+        setEditCollectionData(() => {
+            return {
+                name: selectedCollection.name,
+                image: selectedCollection.image
+            }
+        })
+    }, [selectedCollection])
 
     const handleSaveCollection = () => {
         setDisplayRemoveConfirm(() => {
@@ -152,6 +133,15 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
             })
         } else {
             await updateCollection({ userID: userID, collectionIndex: selectedCollection.collectionIndex, name: editCollectionData.name, image: editCollectionData.image })
+            setEditAnimation(() => {
+                return 'new-collection-out 0.2s linear 1'
+            })
+            setTimeout(() => {
+                setDisplayCollectionEdit(() => {
+                    return 'none'
+                })
+                closeCollection()
+            }, 150)
         }
     }
 
@@ -165,6 +155,33 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                 image: `${e.target.name}.png`
             }
         })
+    }
+
+    const handleDoRemove = () => {
+        removeFromCollection({ recipes: recipesToRemove, userID: userID, collectionIndex: selectedCollection.collectionIndex })
+        setRecipeElements((prevState) => {
+            const updatedRecipeElements = []
+            for (let i = 0; i < prevState.length; i++) {
+                if (!recipesToRemove.includes(prevState[i].key)) {
+                    updatedRecipeElements.push(prevState[i])
+                }
+            }
+            return updatedRecipeElements
+        })
+        setSelectedCollection((prevState) => {
+            const updatedRecipes = []
+            for (let i = 0; i < prevState.recipes.length; i++) {
+                if (!recipesToRemove.includes(prevState.recipes[i]._id)) {
+                    updatedRecipes.push(prevState.recipes[i])
+                }
+            }
+            return {
+                ...prevState,
+                recipes: updatedRecipes
+            }
+        })
+        setRecipesToRemove([])
+        setDisplayRemoveConfirm('none')
     }
 
     try {
@@ -214,35 +231,14 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
                             <button type='button' id='collection-cancel-delete' onClick={() => setDisplayRemoveConfirm(() => {
                                 return 'none'
                             })}>Cancel</button>
-                            <button type='button' id='collection-do-delete' onClick={() => {
-                                removeFromCollection({ recipes: recipesToRemove, userID: userID, collectionIndex: selectedCollection.collectionIndex })
-                                setCollectionRecipes((prevState) => {
-                                    const updatedRecipes = []
-                                    for (let i = 0; i < prevState.length; i++) {
-                                        if (!recipesToRemove.includes(prevState[i])) updatedRecipes.push(prevState[i])
-                                    }
-                                    return updatedRecipes
-                                })
-                                setSelectedCollection((prevState) => {
-                                    const updatedRecipes = []
-                                    for (let i = 0; i < prevState.recipes.length; i++) {
-                                        if (!recipesToRemove.includes(prevState.recipes[i])) updatedRecipes.push(prevState.recipes[i])
-                                    }
-                                    return {
-                                        ...prevState,
-                                        recipes: updatedRecipes
-                                    }
-                                })
-                                setRecipesToRemove([])
-                                setDisplayRemoveConfirm('none')
-                            }}>Remove</button>
+                            <button type='button' id='collection-do-delete' onClick={handleDoRemove}>Remove</button>
                         </div>
                     </div>
                 </div>
                 <div id="edit-collection-container" style={{ display: displayCollectionEdit }} >
                     <div id="edit-collection-div" style={{ animation: editAnimation }}>
                         <div id="edit-collection-title">
-                            <label className="edit-collection-label"> Collection name:</label>
+                            <label className="edit-collection-label">Collection name:</label>
                             <input
                                 type='text'
                                 onChange={(e) => handleChange(e)}
@@ -338,7 +334,7 @@ const Collection = ({ selectedCollection, setSelectedCollection, shrinkAnimation
         )
 
     } catch (err) {
-        //console.log(err)
+        console.log(err)
         return (
             <></>
         )

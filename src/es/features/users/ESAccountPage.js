@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { selectCurrentToken } from "../../../features/auth/authSlice"
 import jwtDecode from 'jwt-decode'
 import { useGetUserDataMutation, useUpdateUserMutation } from '../../../features/users/usersApiSlice'
-import flags from '../../../config/flags'
+import flags from '../../../config/ESflags'
 import { useLogEntryMutation } from '../../../features/logs/logsApiSlice'
 import { useSendLogoutMutation } from "../../../features/auth/authApiSlice"
 import LoadingIcon from "../../../components/LoadingIcon"
@@ -448,7 +448,7 @@ const AccountPage = () => {
                 <div id="edit-user-container">
                     <div id="account-container">
                         <h1 id="edit-user-title">Tu Cuenta</h1>
-                        <p className="account-option" onClick={() => navigate(`/es/user/${userID}`)}>Ver Perfil Público ➜</p>
+                        <p className="account-option" onClick={() => navigate(`/es/user/${userName}`)}>Ver Perfil Público ➜</p>
                         <p className="account-option" onClick={handleUpdateImage}>Cambiar imagen de perfil ➜</p>
                         <p className="account-option" onClick={handleUpdateCountry}>Actualizar país ➜</p>
                         <p className="account-option" onClick={handleUpdateAbout}>Actualizar introducción ➜</p>

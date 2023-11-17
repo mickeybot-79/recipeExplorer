@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react"
 import { useGetCollectionsMutation } from '../../../features/users/usersApiSlice'
+import { useGetCollectionRecipesDataMutation } from '../../../features/recipes/recipesApiSlice'
 import { useSelector } from 'react-redux'
-import { selectCurrentToken } from '../../../features/auth/authSlice'
+import { selectCurrentToken } from "../../../features/auth/authSlice"
 import jwtDecode from 'jwt-decode'
-import Collection from './ESCollection'
-import NewCollection from './ESNewCollection'
+import ESCollection from './ESCollection'
+import ESNewCollection from './ESNewCollection'
 import { useNavigate, useLocation } from "react-router-dom"
 import LoadingIcon from "../../../components/LoadingIcon"
 
 const MyCollections = () => {
 
-    const usrlng = window.localStorage.getItem('usrlng') || ''
+    const usrlng = window.localStorage.getItem('usrlng')
 
     const navigate = useNavigate()
 
@@ -25,10 +26,13 @@ const MyCollections = () => {
 
     const [getCollections] = useGetCollectionsMutation()
 
-    const [collections, setCollections] = useState()
+    const [getCollectionRecipesData] = useGetCollectionRecipesDataMutation()
+
+    const [collections, setCollections] = useState([])
 
     const [selectedCollection, setSelectedCollection] = useState({
         name: '',
+        image: '',
         collectionIndex: 0,
         recipes: [],
         display: 'none'
@@ -40,20 +44,36 @@ const MyCollections = () => {
 
     const [newCollectionAnimation, setNewCollectionAnimation] = useState('')
 
+    const [displayLoading, setDisplayLoading] = useState('none')
+
     useEffect(() => {
         const fetchCollections = async () => {
-            const userCollections = await getCollections({ userID: userID})
+            setDisplayLoading('grid')
+            const userCollections = await getCollections({ userID: userID })
+            console.log(userCollections)
+            const allCollections = []
+            for (let i = 0; i < userCollections.data.userCollections.length; i++) {
+                const currentCollectionRecipes = await getCollectionRecipesData({recipes: userCollections.data.userCollections[i].recipes})
+                allCollections.push({
+                    name: userCollections.data.userCollections[i].name,
+                    image: userCollections.data.userCollections[i].image,
+                    recipes: currentCollectionRecipes
+                })
+            }
+            console.log(allCollections)
             setCollections(() => {
-                return userCollections?.data?.userCollections
+                return allCollections
             })
+            setDisplayLoading('none')
         }
         fetchCollections()
-    }, [userID, getCollections])
+    }, [userID, getCollections,getCollectionRecipesData])
 
     const selectCollection = (collection, currentCollectionIndex) => {
         setSelectedCollection(() => {
             return {
                 name: collection.name,
+                image: collection.image,
                 collectionIndex: currentCollectionIndex,
                 recipes: collection.recipes,
                 display: 'grid'
@@ -97,7 +117,7 @@ const MyCollections = () => {
                     </div>
                     <div style={{ position: 'relative' }} className="collection-image-container">
                         <img
-                            src={`../../../Images/${collection.image}`}
+                            src={`../../Images/${collection.image}`}
                             alt="collection"
                             className="user-collection-image"
                         />
@@ -122,7 +142,7 @@ const MyCollections = () => {
                         })
                     }}
                     >Crear nueva colección</button>
-                    <Collection
+                    <ESCollection
                         selectedCollection={selectedCollection}
                         setSelectedCollection={setSelectedCollection}
                         shrinkAnimation={shrinkAnimation}
@@ -130,19 +150,39 @@ const MyCollections = () => {
                         userID={userID}
                     />
                 </div>
-                <NewCollection
+                <ESNewCollection
                     displayNewCollection={displayNewCollection}
                     setDisplayNewCollection={setDisplayNewCollection}
                     newCollectionAnimation={newCollectionAnimation}
                     setNewCollectionAnimation={setNewCollectionAnimation}
                 />
+                <div style={{
+                    width: '100%',
+                    height: '100%',
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    placeContent: 'center',
+                    display: displayLoading
+                }}>
+                    <img
+                        src='../../../Images/favicon-gif.gif'
+                        alt='icon'
+                        style={{
+                            marginTop: '-100px',
+                            width: '150px',
+                            filter: 'sepia(40%)'
+                        }}
+                    />
+                    <p style={{marginLeft: '40px'}}>Cargando...</p>
+                </div>
             </>
         )
 
     } catch (err) {
         //console.log(err)
         return (
-            <LoadingIcon imgSrc='../../Images/favicon-gif.gif'/>
+            <LoadingIcon imgSrc={`../../Images/favicon-gif.gif`}/>
         )
     }
 

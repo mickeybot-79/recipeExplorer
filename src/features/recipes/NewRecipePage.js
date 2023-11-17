@@ -87,6 +87,8 @@ const NewRecipePage = () => {
 
     const [missingMessage, setMissingMessage] = useState()
 
+    const [displayLoading, setDisplayLoading] = useState('none')
+
     const [addNewRecipe, {
         data: recipe,
         isLoading,
@@ -237,6 +239,7 @@ const NewRecipePage = () => {
 
     async function handleSubmit(event) {
         setIsBlocking(false)
+        setDisplayLoading('grid')
         event.preventDefault()
         //console.log(recipeData)
 
@@ -323,6 +326,7 @@ const NewRecipePage = () => {
                 return 'grid'
             })
         }
+        setDisplayLoading('none')
     }
 
     // Elements
@@ -626,6 +630,9 @@ const NewRecipePage = () => {
                             return 'none'
                         })}>Ok</button>
                     </div>
+                </div>
+                <div id='edit-recipe-loading' style={{ display: displayLoading }}>
+                    <div className="lds-dual-ring" style={{ padding: '100px', width: '300px', height: '300px' }}></div>
                 </div>
             </div>
             <Prompt

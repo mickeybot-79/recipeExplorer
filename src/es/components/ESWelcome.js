@@ -7,12 +7,6 @@ const Welcome = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    useEffect(() => {
-        const userLng = window.localStorage.getItem('usrlng')
-        if (userLng === 'en') navigate('/')
-        // eslint-disable-next-line
-    }, [])
-
     const usrlng = window.localStorage.getItem('usrlng') || ''
 
     const navigate = useNavigate()
@@ -176,12 +170,6 @@ const Welcome = () => {
                     <section id="welcome-comunity">
                         <p id="welcome-community-prompt">Únete a la comunidad para obtener reacciones en tus recetas, crear tus propias colecciones y más!</p>
                         <div id="welcome-community-image-container">
-                            {/* <div id="welcome-community-image">
-                                <img src="../Images/group.jpg" alt="friends" style={{width: '400px'}}/>
-                            </div>
-                            <div id="welcome-community-image">
-                                <img src="../Images//sharing.jpg" alt="sharing" style={{width: '400px'}}/>
-                            </div> */}
                             <div id="welcome-community-image">
                                 <img src="../Images/cooking.jpg" alt="cooking"/>
                             </div>

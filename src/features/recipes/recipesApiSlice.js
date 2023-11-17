@@ -93,6 +93,15 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
                 }
             }),
         }),
+        getCollectionRecipesData: builder.mutation({
+            query: ({recipes}) => ({
+                url: `/recipes/collections`,
+                method: 'POST',
+                body: {
+                    recipes: recipes
+                }
+            }),
+        }),
         getUserRecipes: builder.mutation({
             query: ({userID}) => ({
                 url: `/recipes/user`,
@@ -267,6 +276,7 @@ export const {
     useGetBestRecipesMutation,
     useGetNewestRecipesMutation,
     useGetRecipesDataMutation,
+    useGetCollectionRecipesDataMutation,
     useGetRecipeMutation,
     useGetUserRecipesMutation,
     useGetRecipesByNameMutation,

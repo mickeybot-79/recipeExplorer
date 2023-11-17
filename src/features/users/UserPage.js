@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useGetUserPageDataMutation } from './usersApiSlice'
 import flags from '../../config/flags'
+import ESflags from '../../config/ESflags'
 import { useGetUserRecipesMutation } from '../recipes/recipesApiSlice'
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import LoadingIcon from '../../components/LoadingIcon'
@@ -61,7 +62,8 @@ const UserPage = () => {
             finalImage = currentUser.data.image
         }
 
-        const countryFlag = flags.filter(flag => flag.country === currentUser.data.country)
+        var countryFlag = flags.filter(flag => flag.country === currentUser.data.country)
+        if (!countryFlag[0]) countryFlag = ESflags.filter(flag => flag.country === currentUser.data.country)
 
         return (
             <div id="user-page-container">
