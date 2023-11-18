@@ -246,7 +246,7 @@ const Recipe = ({ currentUser }) => {
         const pictureElements = []
 
         for (let i = 0; i < finalPics.length; i++) {
-            console.log(finalPics[i])
+            //console.log(finalPics[i])
             pictureElements.push((
                 <div className="recipe-thumbnail" key={i}>
                     <img

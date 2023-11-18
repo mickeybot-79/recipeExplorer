@@ -1,7 +1,7 @@
 // add "report" option
 import { useEffect, useState } from 'react'
-import {Helmet} from "react-helmet"
-import { FacebookShareButton, FacebookIcon } from "react-share"
+//import {Helmet} from "react-helmet"
+import { FacebookShareButton, TwitterShareButton, WhatsappShareButton, RedditShareButton, PinterestShareButton, TumblrShareButton/*FacebookIcon*/ } from "react-share"
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from "../auth/authSlice"
 import jwtDecode from 'jwt-decode'
@@ -231,53 +231,53 @@ const RecipePage = () => {
         })
     }
 
-    const shareFacebook = () => {
-        var url = `https://www.localhost:3000/recipes/${currentRecipe.searchField}`
-        var imageURL = 'https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg'
-        //var url = `https://recipes.wicked-web-worm.com`
-        //var url = 'http://localhost:3000/recipes/6522f5937595783cbe83f4ef'
-        console.log(url.toString())
-        var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
-        //let shareUrl = `http://www.facebook.com/sharer/sharer.php?u=${url}?imageurl='https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg'`
-        let shareUrl = `https://www.facebook.com/sharer.php?u=${url}?imageurl=${imageURL}`
-        window.open(shareUrl, "NewWindow", params)
-    }
+    // const shareFacebook = () => {
+    //     var url = `https://www.localhost:3000/recipes/${currentRecipe.searchField}`
+    //     var imageURL = 'https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg'
+    //     //var url = `https://recipes.wicked-web-worm.com`
+    //     //var url = 'http://localhost:3000/recipes/6522f5937595783cbe83f4ef'
+    //     console.log(url.toString())
+    //     var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
+    //     //let shareUrl = `http://www.facebook.com/sharer/sharer.php?u=${url}?imageurl='https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg'`
+    //     let shareUrl = `https://www.facebook.com/sharer.php?u=${url}?imageurl=${imageURL}`
+    //     window.open(shareUrl, "NewWindow", params)
+    // }
 
-    const shareTwitter = () => {
-        var url = `https://recipes.wicked-web-worm.com`
-        var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
-        //let shareUrl = `https://twitter.com/intent/tweet?url={url}&text={title}&via={user_id}&hashtags={hash_tags}`
-        let shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${currentRecipe.name}`
-        window.open(shareUrl, "NewWindow", params)
-    }
+    // const shareTwitter = () => {
+    //     var url = `https://recipes.wicked-web-worm.com`
+    //     var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
+    //     //let shareUrl = `https://twitter.com/intent/tweet?url={url}&text={title}&via={user_id}&hashtags={hash_tags}`
+    //     let shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${currentRecipe.name}`
+    //     window.open(shareUrl, "NewWindow", params)
+    // }
 
-    const shareWhatsapp = () => {
-        //var url = `https://recipes.wicked-web-worm.com`
-        var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
-        let shareUrl = `whatsapp://send?text=${currentRecipe.name}`
-        window.open(shareUrl, "NewWindow", params)
-    }
+    // const shareWhatsapp = () => {
+    //     //var url = `https://recipes.wicked-web-worm.com`
+    //     var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
+    //     let shareUrl = `whatsapp://send?text=${currentRecipe.name}`
+    //     window.open(shareUrl, "NewWindow", params)
+    // }
 
-    const shareReddit = () => {
-        var url = `https://recipes.wicked-web-worm.com`
-        var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
-        let shareUrl = `https://www.reddit.com/submit?url=${url}`
-        window.open(shareUrl, "NewWindow", params)
-    }
+    // const shareReddit = () => {
+    //     var url = `https://recipes.wicked-web-worm.com`
+    //     var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
+    //     let shareUrl = `https://www.reddit.com/submit?url=${url}`
+    //     window.open(shareUrl, "NewWindow", params)
+    // }
 
-    const sharePinterest = () => {
-        var url = `https://recipes.wicked-web-worm.com`
-        var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
-        let shareUrl = `http://pinterest.com/pin/create/button/?url=${url}`
-        window.open(shareUrl, "NewWindow", params)
-    }
+    // const sharePinterest = () => {
+    //     var url = `https://recipes.wicked-web-worm.com`
+    //     var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
+    //     let shareUrl = `http://pinterest.com/pin/create/button/?url=${url}`
+    //     window.open(shareUrl, "NewWindow", params)
+    // }
 
-    const shareTumblr = () => {
-        var url = `https://recipes.wicked-web-worm.com`
-        var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
-        let shareUrl = `http://www.tumblr.com/share/link?url=${url}`
-        window.open(shareUrl, "NewWindow", params)
-    }
+    // const shareTumblr = () => {
+    //     var url = `https://recipes.wicked-web-worm.com`
+    //     var params = "menubar=no,toolbar=no,status=no,width=570,height=570"
+    //     let shareUrl = `http://www.tumblr.com/share/link?url=${url}`
+    //     window.open(shareUrl, "NewWindow", params)
+    // }
 
     const handleCollection = () => {
         setDisplayCollections(() => {
@@ -342,34 +342,35 @@ const RecipePage = () => {
                             id='share-icon'
                             onClick={handleShare} />
                         <div id='share-options-container' style={{ display: displayShare }} onMouseLeave={() => setDisplayShare('none')}>
-                                {/* <FacebookShareButton children={''} url={`https://www.localhost:3000/recipes/${currentRecipe.searchField}`} quote={currentRecipe.name}> */}
-                                <FacebookShareButton children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} quote={currentRecipe.name}>
-                                    <FacebookIcon />
-                                </FacebookShareButton>
                             {/* <div className='share-option' onClick={shareFacebook}>
                                 <img src='../../Images/Facebook.png' alt='Facebook' className='share-icon' />
                                 <p className='share-label'>Facebook</p>
                             </div> */}
-                            <div className='share-option' onClick={shareTwitter}>
+                            {/* <FacebookShareButton children={''} url={`https://www.localhost:3000/recipes/${currentRecipe.searchField}`} quote={currentRecipe.name}> */}
+                            <FacebookShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
+                                <img src='../../Images/Facebook.png' alt='Facebook' className='share-icon' />
+                                <p className='share-label'>Facebook</p>
+                            </FacebookShareButton>
+                            <TwitterShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
                                 <img src='../../Images/X-Twitter.png' alt='Twitter' className='share-icon' />
                                 <p className='share-label'>Twitter</p>
-                            </div>
-                            <div className='share-option' onClick={shareWhatsapp}>
+                            </TwitterShareButton>
+                            <WhatsappShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
                                 <img src='../../Images/WhatsApp.png' alt='Whatsapp' className='share-icon' />
                                 <p className='share-label'>Whatsapp</p>
-                            </div>
-                            <div className='share-option' onClick={shareReddit}>
+                            </WhatsappShareButton>
+                            <RedditShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
                                 <img src='../../Images/Reddit.png' alt='Reddit' className='share-icon' />
                                 <p className='share-label'>Reddit</p>
-                            </div>
-                            <div className='share-option' onClick={sharePinterest}>
+                            </RedditShareButton>
+                            <PinterestShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
                                 <img src='../../Images/Pinterest.png' alt='Pinterest' className='share-icon' />
                                 <p className='share-label'>Pinterest</p>
-                            </div>
-                            <div className='share-option' onClick={shareTumblr}>
+                            </PinterestShareButton>
+                            <TumblrShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
                                 <img src='../../Images/Tumblr.png' alt='Tumblr' className='share-icon' />
                                 <p className='share-label'>Tumblr</p>
-                            </div>
+                            </TumblrShareButton>
                         </div>
                     </div>
                     <Comments
