@@ -94,7 +94,30 @@ const PersistLogin = () => {
         }
         const verifyRefreshToken = async () => {
             try {
-                await refresh()
+                const result = await refresh()
+                if (result?.error?.originalStatus === 403) {
+                    if (tempUserId) {
+                        console.log('sending tempLogin')
+                        doLogin(tempUserId)
+                        window.sessionStorage.setItem('session', 'actv')
+                        window.sessionStorage.setItem('isTemp', 'y')
+                    } else {
+                        try {
+                            console.log('creating tempUser')
+                            const tempUsername = uuid().split('-')[4]
+                            const newUser = createUser(`temp-${tempUsername}`)
+                            window.localStorage.setItem('temp-id', newUser.data.user._id)
+                            window.sessionStorage.setItem('session', 'actv')
+                            window.sessionStorage.setItem('isTemp', 'y')
+                        } catch (err) {
+                            console.log(err)
+                        }
+                    }
+                } else {
+                    setTrueSuccess(true)
+                    window.sessionStorage.setItem('session', 'actv')
+                    window.sessionStorage.setItem('isTemp', 'n')
+                }
             }
             catch (err) {
                 console.log(err)
@@ -107,49 +130,41 @@ const PersistLogin = () => {
         }
 
         if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
-
-            const verifyRefreshToken = async () => {
-                //console.log('verifying refresh token')
-                try {
-                    await refresh()
-                    setTrueSuccess(true)
-                }
-                catch (err) {
-                    console.error(err)
-                }
-            }
-
-            if (!token && persist) verifyRefreshToken()
-        }
-
-        if (!persist) {
-            if (session) {
-                if (isTemp === 'n') { // active user, logged in, session started (prevents losing the login on refresh)
-                    //console.log('verifying refresh token, no persist')
+            if (persist) {
+                if (!token) {
+                    console.log('verifying refresh token, persist')
                     verifyRefreshToken()
-                    setTrueSuccess(true)
-                } else { // temp user, session started (renews the temp access token on refresh)
-                    doLogin(tempUserId)
                 }
-            } else if (!session && tempUserId) { // temp user, session not started (getting temp access token to start the session)
-                doLogin(tempUserId)
-                window.sessionStorage.setItem('session', 'actv')
-                window.sessionStorage.setItem('isTemp', 'y')
-            } else if (!session && !tempUserId) { // new user, session not started (first time visiting the site)
-                try {
-                    const tempUsername = uuid().split('-')[4]
-                    const newUser = createUser(`temp-${tempUsername}`)
-                    window.localStorage.setItem('temp-id', newUser.data.user._id)
+            } else if (!persist) {
+                if (session) {
+                    if (isTemp === 'n') { // active user, logged in, session started (prevents losing the login on refresh)
+                        console.log('verifying refresh token, no persist')
+                        verifyRefreshToken()
+                        setTrueSuccess(true)
+                    } else { // temp user, session started (renews the temp access token on refresh)
+                        doLogin(tempUserId)
+                    }
+                } else if (!session && tempUserId) { // temp user, session not started (getting temp access token to start the session)
+                    doLogin(tempUserId)
                     window.sessionStorage.setItem('session', 'actv')
                     window.sessionStorage.setItem('isTemp', 'y')
-                } catch (err) {
-                    console.log(err)
+                } else if (!session && !tempUserId) { // new user, session not started (first time visiting the site)
+                    try {
+                        const tempUsername = uuid().split('-')[4]
+                        const newUser = createUser(`temp-${tempUsername}`)
+                        window.localStorage.setItem('temp-id', newUser.data.user._id)
+                        window.sessionStorage.setItem('session', 'actv')
+                        window.sessionStorage.setItem('isTemp', 'y')
+                    } catch (err) {
+                        console.log(err)
+                    }
                 }
             }
         }
 
         return () => effectRan.current = true
 
+        // eslint-disable-next-line
     }, [persist, tempLogin, dispatch, addNewUser, tempUserId, session, refresh, isTemp, getUserData, token, userLng])
 
     let content
