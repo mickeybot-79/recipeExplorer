@@ -436,7 +436,7 @@ const NewRecipePage = () => {
 
         var excludeElement
 
-        if (ingredientIndex > 0) {
+        if (ingredientIndex > 2) {
             excludeElement = (
                 <p
                     className="exclude-ingredient"
