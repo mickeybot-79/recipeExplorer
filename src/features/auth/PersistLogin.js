@@ -65,7 +65,7 @@ const PersistLogin = () => {
             try {
                 await tempLogin({ userID: userID }).unwrap()
             } catch (err) {
-                console.log('error on tempLogin', err)
+                //console.log('error on tempLogin', err)
                 const tempUsername = uuid().split('-')[4]
                 const newUser = await addNewUser({
                     user: `temp-${tempUsername}`,
@@ -97,13 +97,13 @@ const PersistLogin = () => {
                 const result = await refresh()
                 if (result?.error?.originalStatus === 403) {
                     if (tempUserId) {
-                        console.log('sending tempLogin')
+                        //console.log('sending tempLogin')
                         doLogin(tempUserId)
                         window.sessionStorage.setItem('session', 'actv')
                         window.sessionStorage.setItem('isTemp', 'y')
                     } else {
                         try {
-                            console.log('creating tempUser')
+                            //console.log('creating tempUser')
                             const tempUsername = uuid().split('-')[4]
                             const newUser = createUser(`temp-${tempUsername}`)
                             window.localStorage.setItem('temp-id', newUser.data.user._id)
@@ -132,13 +132,13 @@ const PersistLogin = () => {
         if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
             if (persist) {
                 if (!token) {
-                    console.log('verifying refresh token, persist')
+                    //console.log('verifying refresh token, persist')
                     verifyRefreshToken()
                 }
             } else if (!persist) {
                 if (session) {
                     if (isTemp === 'n') { // active user, logged in, session started (prevents losing the login on refresh)
-                        console.log('verifying refresh token, no persist')
+                        //console.log('verifying refresh token, no persist')
                         verifyRefreshToken()
                         setTrueSuccess(true)
                     } else { // temp user, session started (renews the temp access token on refresh)
