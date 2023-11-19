@@ -344,27 +344,27 @@ const RecipePage = () => {
                                 <img src='../../Images/Facebook.png' alt='Facebook' className='share-icon' />
                                 <p className='share-label'>Facebook</p>
                             </div> */}
-                            <FacebookShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
+                            <FacebookShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/es/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
                                 <img src='../../Images/Facebook.png' alt='Facebook' className='share-icon' />
                                 <p className='share-label'>Facebook</p>
                             </FacebookShareButton>
-                            <TwitterShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
+                            <TwitterShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/es/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
                                 <img src='../../Images/X-Twitter.png' alt='Twitter' className='share-icon' />
                                 <p className='share-label'>Twitter</p>
                             </TwitterShareButton>
-                            <WhatsappShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
+                            <WhatsappShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/es/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
                                 <img src='../../Images/WhatsApp.png' alt='Whatsapp' className='share-icon' />
                                 <p className='share-label'>Whatsapp</p>
                             </WhatsappShareButton>
-                            <RedditShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
+                            <RedditShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/es/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
                                 <img src='../../Images/Reddit.png' alt='Reddit' className='share-icon' />
                                 <p className='share-label'>Reddit</p>
                             </RedditShareButton>
-                            <PinterestShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
+                            <PinterestShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/es/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
                                 <img src='../../Images/Pinterest.png' alt='Pinterest' className='share-icon' />
                                 <p className='share-label'>Pinterest</p>
                             </PinterestShareButton>
-                            <TumblrShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
+                            <TumblrShareButton className='share-option' children={''} url={`https://recipexplorer.onrender.com/es/recipes/${currentRecipe.searchField}?imageurl=https://recipexplorer.onrender.com/Images/Recipes/spaghetti.jpg`} title={currentRecipe.name}>
                                 <img src='../../Images/Tumblr.png' alt='Tumblr' className='share-icon' />
                                 <p className='share-label'>Tumblr</p>
                             </TumblrShareButton>
