@@ -1,7 +1,13 @@
-// add "report" option
 import { useEffect, useState } from 'react'
 //import {Helmet} from "react-helmet"
-import { FacebookShareButton, TwitterShareButton, WhatsappShareButton, RedditShareButton, PinterestShareButton, TumblrShareButton/*FacebookIcon*/ } from "react-share"
+import { 
+    FacebookShareButton, 
+    TwitterShareButton, 
+    WhatsappShareButton, 
+    RedditShareButton, 
+    PinterestShareButton, 
+    TumblrShareButton /*FacebookIcon*/ 
+} from "react-share"
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from "../auth/authSlice"
 import jwtDecode from 'jwt-decode'

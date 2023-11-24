@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom"
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, /*useRef,*/ useState } from 'react'
 import { useRefreshMutation } from "./authApiSlice"
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from "./authSlice"
@@ -16,7 +16,7 @@ const PersistLogin = () => {
     const isTemp = window.sessionStorage.getItem('isTemp')
     const token = useSelector(selectCurrentToken)
     const userLng = window.localStorage.getItem('usrlng')
-    const effectRan = useRef(false)
+    // const effectRan = useRef(false)
 
     const [trueSuccess, setTrueSuccess] = useState(false)
 
@@ -129,7 +129,7 @@ const PersistLogin = () => {
             window.localStorage.setItem('usrlng', usrlang)
         }
 
-        if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
+        // if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
             if (persist) {
                 if (!token) {
                     //console.log('verifying refresh token, persist')
@@ -160,9 +160,9 @@ const PersistLogin = () => {
                     }
                 }
             }
-        }
+        // }
 
-        return () => effectRan.current = true
+        // return () => effectRan.current = true
 
         // eslint-disable-next-line
     }, [persist, tempLogin, dispatch, addNewUser, tempUserId, session, refresh, isTemp, getUserData, token, userLng])

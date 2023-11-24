@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom"
+import PageFooter from './PageFooter'
 
 const Welcome = () => {
 
@@ -186,6 +187,7 @@ const Welcome = () => {
                         <button type="button" id="welcome-store-button" onClick={() => navigate('/shop')}>Visit the store</button>
                     </section> */}
                     <footer>
+                        <PageFooter openLink={'../Images/open.png'}/>
                     </footer>
                 </main>
             </section>

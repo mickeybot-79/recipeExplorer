@@ -130,16 +130,16 @@ const MyActivity = () => {
             var activityItem
             switch (activityType) {
                 case 'like':
-                    activityItem = (<div className='activity-container' key={activity._id}><p className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>You liked <Link to={`/recipes/${recipeName[0][0]._id}`}>{recipeName[0][0].name}</Link> - {`(${timeValue} ago)`}</p><p className='activity-x' onClick={() => handleDeleteItem(activity)}>✖</p></div>)
+                    activityItem = (<div className='activity-container' key={activity._id}><p className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>You liked <Link to={`/recipes/${recipeName[0][0].searchField}`}>{recipeName[0][0].name}</Link> - {`(${timeValue} ago)`}</p><p className='activity-x' onClick={() => handleDeleteItem(activity)}>✖</p></div>)
                     break
                 case 'comment':
-                    activityItem = (<div className='activity-container' key={activity._id}><p className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>You commented on <Link to={`/recipes/${recipeName[0][0]._id}`}>{recipeName[0][0].name}</Link> - {`(${timeValue} ago)`}</p><p className='activity-x' onClick={() => handleDeleteItem(activity)}>✖</p></div>)
+                    activityItem = (<div className='activity-container' key={activity._id}><p className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>You commented on <Link to={`/recipes/${recipeName[0][0].searchField}`}>{recipeName[0][0].name}</Link> - {`(${timeValue} ago)`}</p><p className='activity-x' onClick={() => handleDeleteItem(activity)}>✖</p></div>)
                     break
                 case 'newRecipe':
-                    activityItem = (<div className='activity-container' key={activity._id}><p className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>You posted <Link to={`/recipes/${recipeName[0][0]._id}`}>{recipeName[0][0].name}</Link> - {`(${timeValue} ago)`}</p><p className='activity-x' onClick={() => handleDeleteItem(activity)}>✖</p></div>)
+                    activityItem = (<div className='activity-container' key={activity._id}><p className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>You posted <Link to={`/recipes/${recipeName[0][0].searchField}`}>{recipeName[0][0].name}</Link> - {`(${timeValue} ago)`}</p><p className='activity-x' onClick={() => handleDeleteItem(activity)}>✖</p></div>)
                     break
                 case 'favorite':
-                    activityItem = (<div className='activity-container' key={activity._id}><p className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>You added <Link to={`/recipes/${recipeName[0][0]._id}`}>{recipeName[0][0].name}</Link> to favorites - {`(${timeValue} ago)`}</p><p className='activity-x' onClick={() => handleDeleteItem(activity)}>✖</p></div>)
+                    activityItem = (<div className='activity-container' key={activity._id}><p className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>You added <Link to={`/recipes/${recipeName[0][0].searchField}`}>{recipeName[0][0].name}</Link> to favorites - {`(${timeValue} ago)`}</p><p className='activity-x' onClick={() => handleDeleteItem(activity)}>✖</p></div>)
                     break
                 case 'image':
                     activityItem = (<div className='activity-container' key={activity._id}><p className='activity-item'><span style={{ fontSize: '25px', color: 'rgba(57, 158, 57, 0.719)', marginRight: '10px' }}>★</span>You updated your profile image - {`(${timeValue} ago)`}</p><p className='activity-x' onClick={() => handleDeleteItem(activity)}>✖</p></div>)

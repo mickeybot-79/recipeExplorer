@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { FacebookShareButton, TwitterShareButton, WhatsappShareButton, RedditShareButton, PinterestShareButton, TumblrShareButton/*FacebookIcon*/ } from "react-share"
+import { 
+    FacebookShareButton, 
+    TwitterShareButton, 
+    WhatsappShareButton, 
+    RedditShareButton, 
+    PinterestShareButton, 
+    TumblrShareButton /*FacebookIcon*/ 
+} from "react-share"
 import { selectCurrentToken } from "../../../features/auth/authSlice"
 import jwtDecode from 'jwt-decode'
 import { useNavigate, useParams, /*useLocation*/ } from 'react-router-dom'
