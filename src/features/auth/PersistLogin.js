@@ -18,6 +18,10 @@ const PersistLogin = () => {
     const userLng = window.localStorage.getItem('usrlng')
     // const effectRan = useRef(false)
 
+    const lgoff = window.localStorage.getItem('lgoff')
+
+    if (!lgoff) window.localStorage.setItem('lgoff', 'n')
+
     const [trueSuccess, setTrueSuccess] = useState(false)
 
     const [refresh, {
