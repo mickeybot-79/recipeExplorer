@@ -72,7 +72,7 @@ const router = createBrowserRouter(
         <Route path="user/404" element={<UserNotFound />} />
         <Route element={<RequireAuth />}>
           <Route element={<PrefetchUser />}>
-            <Route path="dash">
+            <Route path="dash" element={<Dashboard />}>
               <Route index element={<Dashboard />} />
               <Route path="favorites" element={<MyFavoriteRecipesPage />} />
               <Route path="myrecipes" element={<MyRecipesPage />} />
@@ -100,7 +100,7 @@ const router = createBrowserRouter(
           <Route path="user/404" element={<ESUserNotFound />} />
           <Route element={<RequireAuth />}>
             <Route element={<PrefetchUser />}>
-              <Route path="dash">
+              <Route path="dash" element={<ESDashboard />}>
                 <Route index element={<ESDashboard />} />
                 <Route path="favorites" element={<ESMyFavoriteRecipesPage />} />
                 <Route path="myrecipes" element={<ESMyRecipesPage />} />
