@@ -273,6 +273,8 @@ body {
 
 #user-options {
   display: none;
+  position: absolute;
+  top: 70px;
   border: 1px solid;
   width: 120px;
   margin-left: 40px;
