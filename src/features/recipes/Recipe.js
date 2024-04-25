@@ -29,15 +29,6 @@ const Recipe = ({ currentUser }) => {
         const fetchData = async () => {
             const response = await getRecipe({ id: id, commentsSlice: 0 })
             if (response?.error?.originalStatus === 400 || response?.data === null) navigate('/recipe/404')
-            setCurrentRecipe(() => {
-                return response.data.recipe
-            })
-            const authorUser = await getUserWhoPosted({ userID: response?.data?.recipe?.createdBy })
-            setRecipeAuthor(() => {
-                return authorUser ?? ''
-            })
-            console.log("response.data.recipe.language: ", response.data.recipe.language)
-            console.log("usrlng: ", usrlng)
             if (response.data.recipe.language !== usrlng) {
                 window.localStorage.setItem('usrlng', response.data.recipe.language)
                 if (response.data.recipe.language === 'es') {
@@ -46,6 +37,13 @@ const Recipe = ({ currentUser }) => {
                     navigate(`/recipes/${response.data.recipe.searchField}`)
                 }
             }
+            setCurrentRecipe(() => {
+                return response.data.recipe
+            })
+            const authorUser = await getUserWhoPosted({ userID: response?.data?.recipe?.createdBy })
+            setRecipeAuthor(() => {
+                return authorUser ?? ''
+            })
         }
         fetchData()
     }, [id, getRecipe, navigate, getUserWhoPosted])
