@@ -29,7 +29,6 @@ const Recipe = ({ currentUser }) => {
         const fetchData = async () => {
             const response = await getRecipe({ id: id, commentsSlice: 0 })
             if (response?.error?.originalStatus === 400 || response?.data === null) navigate('/recipe/404')
-            if (response.data.recipe.language !== usrlng) window.localStorage.setItem('usrlng', response.data.recipe.language)
             setCurrentRecipe(() => {
                 return response.data.recipe
             })
@@ -37,6 +36,12 @@ const Recipe = ({ currentUser }) => {
             setRecipeAuthor(() => {
                 return authorUser ?? ''
             })
+            console.log("response.data.recipe.language: ", response.data.recipe.language)
+            console.log("usrlng: ", usrlng)
+            if (response.data.recipe.language !== usrlng) {
+                window.localStorage.setItem('usrlng', response.data.recipe.language)
+                window.location.reload()
+            }
         }
         fetchData()
     }, [id, getRecipe, navigate, getUserWhoPosted])
