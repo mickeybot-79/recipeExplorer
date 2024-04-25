@@ -40,6 +40,11 @@ const Recipe = ({ currentUser }) => {
             console.log("usrlng: ", usrlng)
             if (response.data.recipe.language !== usrlng) {
                 window.localStorage.setItem('usrlng', response.data.recipe.language)
+                if (response.data.recipe.language === 'es') {
+                    navigate(`/es/recipes/${response.data.recipe.searchField}`)
+                } else {
+                    navigate(`/recipes/${response.data.recipe.searchField}`)
+                }
             }
         }
         fetchData()
