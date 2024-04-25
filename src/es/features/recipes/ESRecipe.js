@@ -7,7 +7,7 @@ const Recipe = ({ currentUser }) => {
 
     const isTemp = window.sessionStorage.getItem('isTemp')
 
-    //const usrlng = window.localStorage.getItem('usrlng')
+    const usrlng = window.localStorage.getItem('usrlng')
 
     const [getRecipe] = useGetRecipeMutation()
 
@@ -37,6 +37,14 @@ const Recipe = ({ currentUser }) => {
             setRecipeAuthor(() => {
                 return authorUser ?? ''
             })
+            if (response.data.recipe.language !== usrlng) {
+                window.localStorage.setItem('usrlng', response.data.recipe.language)
+                if (response.data.recipe.language === 'es') {
+                    navigate(`/es/recipes/${response.data.recipe.searchField}`)
+                } else {
+                    navigate(`/recipes/${response.data.recipe.searchField}`)
+                }
+            }
         }
         fetchData()
     }, [id, getUserWhoPosted, getRecipe, navigate])
