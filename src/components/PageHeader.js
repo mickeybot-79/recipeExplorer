@@ -209,7 +209,10 @@ const PageHeader = () => {
             <div id='flag-choice' style={{display: displayLngChoice}} onMouseOver={() => setDisplayLngChoice('block')} onMouseLeave={() => setDisplayLngChoice('none')}>
                 <div id='EN-option' onClick={() => {
                     window.localStorage.setItem('usrlng', 'en')
-                    if (currentLocation.pathname.includes('/es')) navigate(`/${currentLocation.pathname}`)
+                    if (currentLocation.pathname.includes('/es')) {
+                        navigate(`/${currentLocation.pathname}`)
+                        window.location.reload()
+                    }
                     setDisplayLngChoice('none')
                 }}>
                     <img src='../Images/UK.jpg' alt='UK' className='flag-option'/>
@@ -217,7 +220,10 @@ const PageHeader = () => {
                 </div>
                 <div id='ES-option' onClick={() => {
                     window.localStorage.setItem('usrlng', 'es')
-                    if (!currentLocation.pathname.includes('/es')) navigate(`/es${currentLocation.pathname}`)
+                    if (!currentLocation.pathname.includes('/es')) {
+                        navigate(`/es${currentLocation.pathname}`)
+                        window.location.reload()
+                    }
                     setDisplayLngChoice('none')
                 }}>
                     <img src='../Images/Spain.jpg' alt='SP' className='flag-option'/>
