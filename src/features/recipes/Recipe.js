@@ -29,6 +29,7 @@ const Recipe = ({ currentUser }) => {
         const fetchData = async () => {
             const response = await getRecipe({ id: id, commentsSlice: 0 })
             if (response?.error?.originalStatus === 400 || response?.data === null) navigate('/recipe/404')
+            console.log(response.data.recipe.language)
             window.localStorage.setItem('usrlng', 'en')
             setCurrentRecipe(() => {
                 return response.data.recipe
