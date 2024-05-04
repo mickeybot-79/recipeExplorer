@@ -28,7 +28,7 @@ const Dashboard = () => {
     }, [usrlng, navigate, currentLocation])
 
     const token = useSelector(selectCurrentToken)
-    const userID = token ? jwtDecode(token).UserInfo.id : window.localStorage.getItem('temp-id')
+    const userID = token ? jwtDecode(token).UserInfo.id : ''
     //const userID = jwtDecode(token).UserInfo.id
 
     const [activities, setActivities] = useState()
