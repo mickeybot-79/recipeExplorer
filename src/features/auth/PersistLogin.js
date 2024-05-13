@@ -149,9 +149,15 @@ const PersistLogin = () => {
                         doLogin(tempUserId)
                     }
                 } else if (!session && tempUserId) { // temp user, session not started (getting temp access token to start the session)
-                    doLogin(tempUserId)
-                    window.sessionStorage.setItem('session', 'actv')
-                    window.sessionStorage.setItem('isTemp', 'y')
+                    try {
+                        doLogin(tempUserId)
+                        window.sessionStorage.setItem('session', 'actv')
+                        window.sessionStorage.setItem('isTemp', 'y')
+                    } catch {
+                        const newUser = createUser(`temp-${tempUsername}`)
+                        window.sessionStorage.setItem('session', 'actv')
+                        window.sessionStorage.setItem('isTemp', 'y')
+                    }
                 } else if (!session && !tempUserId) { // new user, session not started (first time visiting the site)
                     try {
                         const tempUsername = uuid().split('-')[4]
