@@ -154,7 +154,9 @@ const PersistLogin = () => {
                         window.sessionStorage.setItem('session', 'actv')
                         window.sessionStorage.setItem('isTemp', 'y')
                     } catch {
-                        createUser(`temp-${tempUserId}`)
+                        const tempUsername = uuid().split('-')[4]
+                        const newUser = createUser(`temp-${tempUsername}`)
+                        window.localStorage.setItem('temp-id', newUser.data.user._id)
                         window.sessionStorage.setItem('session', 'actv')
                         window.sessionStorage.setItem('isTemp', 'y')
                     }
