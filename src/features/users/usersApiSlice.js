@@ -60,9 +60,16 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                     tempId: tempId
                 }
             }),
-            invalidatesTags: [
-                { type: 'User', id: "LIST" }
-            ]
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled
+                    //console.log(data)
+                    const { accessToken } = data
+                    dispatch(setCredentials({ accessToken }))
+                } catch (err) {
+                    console.log(err)
+                }
+            }
         }),
         updateUser: builder.mutation({
             query: ({userID, pwd, country, about, image, active}) => ({
