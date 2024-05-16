@@ -301,7 +301,7 @@ const PageHeader = () => {
                             sendLogout()
                             doLogin(userID)
                             window.sessionStorage.setItem('isTemp', 'y')
-                            window.sessionStorage.setItem('persist', 'false')
+                            window.localStorage.setItem('persist', 'false')
                             if (currentLocation.pathname !== '/') {
                                 setTimeout(() => {
                                     navigate('/')
