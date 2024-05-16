@@ -291,6 +291,7 @@ const ESPageHeader = () => {
                             sendLogout()
                             doLogin(userID)
                             window.sessionStorage.setItem('isTemp', 'y')
+                            window.sessionStorage.setItem('persist', 'false')
                             if (currentLocation.pathname !== '/es') {
                                 setTimeout(() => {
                                     navigate('/es/')
