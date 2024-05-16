@@ -16,7 +16,7 @@ const PersistLogin = () => {
     const isTemp = window.sessionStorage.getItem('isTemp')
     const token = useSelector(selectCurrentToken)
     const userLng = window.localStorage.getItem('usrlng')
-    // const effectRan = useRef(false)
+    const effectRan = useRef(false)
 
     const lgoff = window.localStorage.getItem('lgoff')
 
@@ -65,6 +65,7 @@ const PersistLogin = () => {
     // }, [])
 
     useEffect(() => {
+        if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
         const doLogin = async (userID) => {
             try {
                 await tempLogin({ userID: userID }).unwrap()
@@ -172,9 +173,9 @@ const PersistLogin = () => {
                     }
                 }
             }
-        // }
+        }
 
-        // return () => effectRan.current = true
+        return () => effectRan.current = true
 
         // eslint-disable-next-line
     }, [persist, tempLogin, dispatch, addNewUser, tempUserId, session, refresh, isTemp, getUserData, token, userLng])
