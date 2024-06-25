@@ -42,8 +42,8 @@ const Login = () => {
  
     const isTemp = window.sessionStorage.getItem('isTemp')
 
-    //const tempId = window.localStorage.getItem('temp-id')
-    const tempId = 'test'
+    const tempId = window.localStorage.getItem('temp-id')
+    //const tempId = 'test'
 
     const userRef = useRef()
 
