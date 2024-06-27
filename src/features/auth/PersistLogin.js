@@ -130,7 +130,7 @@ const PersistLogin = () => {
         }
 
         if (!userLng) {
-            var usrlang = navigator.language || navigator.userLanguage
+            var usrlang = navigator.language === 'en-US' || navigator.userLanguage === 'en-US' ? 'en' : navigator.language || navigator.userLanguage
             window.localStorage.setItem('usrlng', usrlang)
         }
 
