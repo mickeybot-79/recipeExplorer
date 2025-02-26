@@ -1,12 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom"
 import PageFooter from './PageFooter'
+import {useGetRecipesQuery} from '../features/recipes/recipesApiSlice'
 
 const Welcome = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
+
+    const {
+        data
+    } = useGetRecipesQuery('recipesList', {
+        pollingInterval: 600000,
+        refetchOnMountOrArgChange: true
+    })
+
+    console.log(data)
 
     const usrlng = window.localStorage.getItem('usrlng')
 
