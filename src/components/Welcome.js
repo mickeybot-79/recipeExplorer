@@ -11,7 +11,7 @@ const Welcome = () => {
 
     const {
         data
-    } = useGetRecipesQuery('recipesList', {
+    } = useGetRecipesQuery('', {
         pollingInterval: 600000,
         refetchOnMountOrArgChange: true
     })
